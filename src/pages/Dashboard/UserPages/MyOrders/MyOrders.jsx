@@ -1,11 +1,11 @@
 import React from "react";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../../../components/LoadingSpinner/LoadingSpinner";
 import { Link } from "react-router";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-import useAuth from "../../../hooks/useAuth";
+import useAuth from "../../../../hooks/useAuth";
 
 const MyOrders = () => {
   const axiosSecure = useAxiosSecure();
@@ -32,7 +32,7 @@ const MyOrders = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Continue!"
+      confirmButtonText: "Yes, Continue!",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -50,10 +50,36 @@ const MyOrders = () => {
           });
         } catch (error) {
           toast.error("Order cancellation failed!");
+          console.log("Cannot cancel order ->", error);
         }
       }
     });
   };
+
+  // payment function
+  const handlePayment = async (order) => {
+  try {
+    const paymentInfo = {
+      orderId: order._id,
+      bookId: order.bookId,
+      bookName: order.bookName,
+      image: order?.image,
+      price: order.price,
+      userEmail: order.userEmail,
+      userName: order.userName,
+    };
+
+    const { data } = await axiosSecure.post(
+      '/create-checkout-session', paymentInfo);
+
+    window.location.assign(data.url);
+  } catch (error) {
+    toast.error("Payment failed to initialize");
+    console.log(error);
+  }
+};
+
+
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -109,12 +135,12 @@ const MyOrders = () => {
               {/* Pay Now */}
               {order.orderStatus === "pending" &&
                 order.paymentStatus === "unpaid" && (
-                  <Link
-                    to={`/dashboard/payment/${order._id}`}
+                  <button
+                    onClick={() => handlePayment(order)}
                     className="btn btn-primary btn-sm w-full"
                   >
                     Pay Now
-                  </Link>
+                  </button>
                 )}
             </div>
           </div>
@@ -129,6 +155,7 @@ const MyOrders = () => {
               <th>#</th>
               <th>Book Title</th>
               <th>Order Date</th>
+              <th>Payment</th>
               <th>Status</th>
               <th>Cancel</th>
               <th>Pay Now</th>
@@ -141,7 +168,9 @@ const MyOrders = () => {
                 <td>{index + 1}</td>
                 <td className="font-semibold">{order.bookName}</td>
                 <td>{order.createdAt}</td>
-
+                <td className="font-medium">
+                  {order.paymentStatus}
+                </td>
                 <td>
                   <span
                     className={`badge ${
@@ -174,12 +203,12 @@ const MyOrders = () => {
                 <td>
                   {order.orderStatus === "pending" &&
                   order.paymentStatus === "unpaid" ? (
-                    <Link
-                      to={`/dashboard/payment/${order._id}`}
+                    <button
+                      onClick={() => handlePayment(order)}
                       className="btn btn-primary btn-sm"
                     >
                       Pay Now
-                    </Link>
+                    </button>
                   ) : (
                     <span className="text-gray-400">—</span>
                   )}

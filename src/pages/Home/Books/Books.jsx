@@ -46,7 +46,9 @@ const Books = () => {
       <div className="flex justify-between flex-col md:flex-row gap-4">
 
         {/* Search Form */}
-        <form onSubmit={handleSearchSubmit}>
+        <form
+          className="flex-1"
+          onSubmit={handleSearchSubmit}>
           <label className="input flex items-center gap-2">
             <svg
               className="h-[1em] opacity-50"
@@ -76,7 +78,7 @@ const Books = () => {
         </form>
 
         {/* Sort Form */}
-        <form>
+        <form className="w-48">
           <select
             onChange={(e) => setPrice(e.target.value)}
             className="select w-full">

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import useAuth from "../../../../hooks/useAuth";
 import toast from "react-hot-toast";
-import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../../../components/LoadingSpinner/LoadingSpinner";
 import { motion } from "framer-motion";
 
 const OwnerOrder = () => {
@@ -112,7 +112,7 @@ const OwnerOrder = () => {
                       onClick={() => handleCancelOrder(order._id)}
                       className="btn btn-error btn-sm text-white flex items-center gap-1"
                     >
-                     Cancel
+                      Cancel
                     </button>
                   )}
                 </td>

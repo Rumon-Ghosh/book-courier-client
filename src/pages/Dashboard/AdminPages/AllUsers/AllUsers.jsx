@@ -1,7 +1,7 @@
 import React from "react";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "../../../../components/LoadingSpinner/LoadingSpinner";
 import { motion } from "framer-motion";
 import { FaUserShield, FaUserTie, FaUser } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
 
+  // get all the users
   const {
     data: allUsers = [],
     isLoading,

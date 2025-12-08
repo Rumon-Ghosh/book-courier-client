@@ -7,12 +7,14 @@ import useAuth from "../../../hooks/useAuth";
 import { motion } from "framer-motion";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import { useForm } from "react-hook-form";
+import useRole from "../../../hooks/useRole";
 
 const BookDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [role, isRoleLoading] = useRole();
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -27,13 +29,14 @@ const BookDetails = () => {
 
   const { register, handleSubmit, formState: {errors}, reset } = useForm()
 
-  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
+  if (isLoading || isRoleLoading) return <LoadingSpinner></LoadingSpinner>;
 
   const handlePlaceOrder = async (data) => {
     // console.log(data)
     const orderInfo = {
       bookId: book._id,
       bookName: book.bookName,
+      image: book.image,
       price: book.price,
       userName: user.displayName,
       userEmail: user.email,
@@ -110,11 +113,15 @@ const BookDetails = () => {
             <button
               onClick={() => setOpenModal(true)}
               className="btn btn-primary"
+              disabled={role !== 'user'}
             >
               Order Now
             </button>
 
-            <button onClick={handleAddWishlist} className="btn btn-secondary">
+            <button
+              disabled={role !== 'user'}
+              onClick={handleAddWishlist}
+              className="btn btn-secondary">
               Add to Wishlist
             </button>
           </div>

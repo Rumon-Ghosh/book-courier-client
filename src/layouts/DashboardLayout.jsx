@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { LuLogOut } from "react-icons/lu";
 import { Link, Outlet, useNavigate } from "react-router";
@@ -6,10 +6,23 @@ import useAuth from "../hooks/useAuth";
 import LibrarianMenu from "../components/Menu/LibrarianMenu";
 import UserMenu from "../components/Menu/UserMenu";
 import AdminMenu from "../components/Menu/AdminMenu";
+import useRole from "../hooks/useRole";
+import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 const DashboardLayout = () => {
   const { logOutUser } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const [role, isRoleLoading] = useRole();
+
+   const [theme] = useState(localStorage.getItem("theme") || "light");
+  
+    useEffect(() => {
+      const html = document.querySelector("html");
+      html.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    }, [theme]);
+
 
   const handleLogOutUser = async () => {
     try {
@@ -20,6 +33,9 @@ const DashboardLayout = () => {
       toast(error);
     }
   };
+
+  if(isRoleLoading) return <LoadingSpinner></LoadingSpinner>
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -87,9 +103,9 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Homepage</span>
               </Link>
             </li>
-            <UserMenu></UserMenu>
-            <LibrarianMenu></LibrarianMenu>
-            <AdminMenu></AdminMenu>
+            {role === 'user' && <UserMenu></UserMenu>}
+            {role === 'librarian' && <LibrarianMenu></LibrarianMenu>}
+            {role === 'admin' && <AdminMenu></AdminMenu>}
             {/* List item */}
             <li>
               <button

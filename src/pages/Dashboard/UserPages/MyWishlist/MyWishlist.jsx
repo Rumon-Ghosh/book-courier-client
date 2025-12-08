@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
-import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import LoadingSpinner from "../../../../components/LoadingSpinner/LoadingSpinner";
+import useAuth from "../../../../hooks/useAuth";
 
 const MyWishlist = () => {
   const axiosSecure = useAxiosSecure();
@@ -20,7 +20,9 @@ const MyWishlist = () => {
   // console.log(myWishlists)
   return (
     <div>
-      <h3 className="text-3xl text-center font-bold my-5">Here Is Your WishList</h3>
+      <h3 className="text-3xl text-center font-bold my-5">
+        Here Is Your WishList
+      </h3>
       <div className="overflow-x-auto">
         <table className="table table-zebra">
           {/* head */}
@@ -40,7 +42,8 @@ const MyWishlist = () => {
                   <img
                     className="w-14 h-14 rounded-full"
                     src={list?.image}
-                    alt="book_image" />
+                    alt="book_image"
+                  />
                 </td>
                 <td>{list?.bookName}</td>
                 <td>{list?.price}</td>
