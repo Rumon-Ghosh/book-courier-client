@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 })
 
 const useAxiosSecure = () => {
-  const { user, logOut, loading } = useAuth()
+  const { user, logOutUser, loading } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const useAxiosSecure = () => {
         res => res,
         err => {
           if (err?.response?.status === 401 || err?.response?.status === 403) {
-            logOut()
+            logOutUser()
               .then(() => {
                 console.log('Logged out successfully.')
               })
@@ -44,7 +44,7 @@ const useAxiosSecure = () => {
         axiosInstance.interceptors.response.eject(responseInterceptor)
       }
     }
-  }, [user, loading, logOut, navigate])
+  }, [user, loading, logOutUser, navigate])
 
   return axiosInstance
 }

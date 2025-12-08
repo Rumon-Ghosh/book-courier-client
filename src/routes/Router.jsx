@@ -11,6 +11,10 @@ import BookDetails from "../pages/Home/BookDetails/BookDetails";
 import MyOrders from "../pages/Dashboard/MyOrders/MyOrders";
 import MyWishlist from "../pages/Dashboard/MyWishlist/MyWishlist";
 import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
+import PrivateRoute from "./PrivateRoute";
+import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
+import OwnerOrder from "../pages/Dashboard/OwnerOrder/OwnerOrder";
+import MyBooks from "../pages/Dashboard/MyBooks/MyBooks";
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +31,9 @@ export const router = createBrowserRouter([
       },
       {
         path: '/book/:id',
-        element: <BookDetails></BookDetails>
+        element: <PrivateRoute>
+          <BookDetails></BookDetails>
+        </PrivateRoute>
       }
     ]
   },
@@ -49,19 +55,45 @@ export const router = createBrowserRouter([
       },
       {
         path: 'my-orders',
-        element: <MyOrders></MyOrders>
+        element: <PrivateRoute>
+          <MyOrders></MyOrders>
+        </PrivateRoute>
       },
       {
         path: 'my-wishlist',
-        element: <MyWishlist></MyWishlist>
+        element: <PrivateRoute>
+          <MyWishlist></MyWishlist>
+        </PrivateRoute>
       },
       {
         path: 'my-profile',
-        element: <MyProfile></MyProfile>
+        element: <PrivateRoute>
+          <MyProfile></MyProfile>
+        </PrivateRoute>
       },
       {
         path: 'add-book',
-        element: <AddBook></AddBook>
+        element: <PrivateRoute>
+          <AddBook></AddBook>
+        </PrivateRoute>
+      },
+      {
+        path: 'my-books',
+        element: <PrivateRoute>
+          <MyBooks></MyBooks>
+        </PrivateRoute>
+      },
+      {
+        path: 'orders-collection',
+        element: <PrivateRoute>
+          <OwnerOrder></OwnerOrder>
+        </PrivateRoute>
+      },
+      {
+        path: 'all-users',
+        element: <PrivateRoute>
+          <AllUsers></AllUsers>
+        </PrivateRoute>
       }
     ]
   }

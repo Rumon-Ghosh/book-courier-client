@@ -93,7 +93,7 @@ const Nav = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <img className="w-10 rounded-full" src={user?.photoURL} alt="USER" />
+          <img className="w-10 h-10 rounded-full" src={user?.photoURL} alt="USER" />
         ) : (
           <Link className="btn" to="/login">
             Login

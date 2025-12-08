@@ -24,7 +24,7 @@ const Login = () => {
     try {
       const LoggedIn = await logInUser(email, password)
         if (LoggedIn) {
-          console.log(LoggedIn)
+          // console.log(LoggedIn)
           toast.success("LogIn successful")
           navigate(from, {replace: true})
         }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import useAuth from "../../../hooks/useAuth";
@@ -12,6 +12,7 @@ const BookDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -38,6 +39,7 @@ const BookDetails = () => {
       userEmail: user.email,
       phone: data.phone,
       address: data.address,
+      owner: book.createdBy,
     };
 
     try {
@@ -45,6 +47,7 @@ const BookDetails = () => {
       if (data.insertedId) {
         toast.success("Order Placed Successfully!");
         setOpenModal(false);
+        navigate('/dashboard/my-orders')
         reset();
       }
     } catch (err) {

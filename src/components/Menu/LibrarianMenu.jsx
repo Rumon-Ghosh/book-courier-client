@@ -1,5 +1,5 @@
 import React from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaBookOpen, FaPlus, FaShopify } from "react-icons/fa";
 import { Link } from "react-router";
 
 const LibrarianMenu = () => {
@@ -15,6 +15,30 @@ const LibrarianMenu = () => {
           {/* add-book icon */}
           <FaPlus />
           <span className="is-drawer-close:hidden">Add Book</span>
+        </Link>
+      </li>
+      {/* List item */}
+      <li>
+        <Link
+          to={`/dashboard/my-books`}
+          className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+          data-tip="My Books"
+        >
+          {/* writers books icon */}
+          <FaBookOpen />
+          <span className="is-drawer-close:hidden">My Books</span>
+        </Link>
+      </li>
+      {/* List item */}
+      <li>
+        <Link
+          to={`/dashboard/orders-collection`}
+          className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+          data-tip="Orders"
+        >
+          {/* writers orders icon */}
+          <FaShopify />
+          <span className="is-drawer-close:hidden">Orders</span>
         </Link>
       </li>
     </>

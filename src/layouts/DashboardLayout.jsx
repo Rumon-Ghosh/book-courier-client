@@ -5,6 +5,7 @@ import { Link, Outlet, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
 import LibrarianMenu from "../components/Menu/LibrarianMenu";
 import UserMenu from "../components/Menu/UserMenu";
+import AdminMenu from "../components/Menu/AdminMenu";
 
 const DashboardLayout = () => {
   const { logOutUser } = useAuth()
@@ -88,7 +89,7 @@ const DashboardLayout = () => {
             </li>
             <UserMenu></UserMenu>
             <LibrarianMenu></LibrarianMenu>
-
+            <AdminMenu></AdminMenu>
             {/* List item */}
             <li>
               <button

@@ -5,12 +5,18 @@ import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import { Link } from "react-router";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
 
 const MyOrders = () => {
   const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
-  const { data: orders = [], isLoading, refetch } = useQuery({
-    queryKey: ["my-orders"],
+  const {
+    data: orders = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["my-orders", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/my-orders");
       return data;
@@ -18,47 +24,45 @@ const MyOrders = () => {
   });
 
   // order cancel functionality
-const handleCancelOrder = async (id) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, Cancel!"
-  }).then(async (result) => {  
-    if (result.isConfirmed) {
-      try {
-        const { data } = await axiosSecure.patch(`/orders/cancel/${id}`);
+  const handleCancelOrder = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Continue!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const { data } = await axiosSecure.patch(`/orders/cancel/${id}`);
 
-        if (data.modifiedCount) {
-          toast.success("Order Cancelled Successfully!");
-          refetch()
+          if (data.modifiedCount) {
+            toast.success("Order Cancelled Successfully!");
+            refetch();
+          }
+
+          Swal.fire({
+            title: "Cancelled!",
+            text: "Your order has been cancelled.",
+            icon: "success",
+          });
+        } catch (error) {
+          toast.error("Order cancellation failed!");
         }
-
-        Swal.fire({
-          title: "Cancelled!",
-          text: "Your order has been cancelled.",
-          icon: "success"
-        });
-
-      } catch (error) {
-        toast.error("Order cancellation failed!");
       }
-    }
-  });
-};
-
+    });
+  };
 
   if (isLoading) return <LoadingSpinner />;
 
-  const formatDate = (date) =>
-    new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
+  // const formatDate = (date) =>
+  //   new Date(date).toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "numeric",
+  //   });
 
   return (
     <div className="p-4">
@@ -69,11 +73,8 @@ const handleCancelOrder = async (id) => {
 
       {/* Mobile Cards Layout */}
       <div className="md:hidden">
-        {orders.map((order, index) => (
-          <div
-            key={order._id}
-            className="card bg-base-100 shadow-lg mb-4 p-4"
-          >
+        {orders.map((order) => (
+          <div key={order._id} className="card bg-base-100 shadow-lg mb-4 p-4">
             <h2 className="font-semibold text-lg">{order.bookName}</h2>
             <p className="text-sm text-gray-500">
               Order Date: {order.createdAt}
@@ -99,7 +100,8 @@ const handleCancelOrder = async (id) => {
               {order.orderStatus === "pending" && (
                 <button
                   onClick={() => handleCancelOrder(order._id)}
-                  className="btn btn-error btn-sm w-full">
+                  className="btn btn-error btn-sm w-full"
+                >
                   Cancel Order
                 </button>
               )}
@@ -159,7 +161,8 @@ const handleCancelOrder = async (id) => {
                   {order.orderStatus === "pending" ? (
                     <button
                       onClick={() => handleCancelOrder(order._id)}
-                      className="btn btn-error btn-sm">
+                      className="btn btn-error btn-sm"
+                    >
                       Cancel
                     </button>
                   ) : (

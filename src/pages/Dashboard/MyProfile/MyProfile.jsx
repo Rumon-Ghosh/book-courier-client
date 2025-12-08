@@ -11,7 +11,7 @@ import { uploadImage } from "../../../utils";
 
 const MyProfile = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const {register, handleSubmit, reset, formState: {errors}} = useForm()
 
@@ -25,20 +25,20 @@ const MyProfile = () => {
 
   const handleUpdateProfile = async (data) => {
     // console.log(data);
-    const { name, photo: photoFile } = data;
-    const imageFile = photoFile[0];
+    const { name, photo } = data;
+    const imageFile = photo[0];
     try {
-      const photo = await uploadImage(imageFile)
-      const updateInfo = {
-        name,
-        photo
-      }
-      const updateRes = await axiosSecure.patch(`/users/${user?.email}`, updateInfo)
-      if (updateRes.data.modifiedCount) {
+      const photoURL = await uploadImage(imageFile)
+      
+      await updateUser(name, photoURL)
+      
+      const result = await axiosSecure.patch(`/users/my-profile/${user?.email}`, {name, photoURL})
+      if (result.data.modifiedCount) {
         toast.success('Profile update success!')
         refetch();
-        reset()
-      }
+        reset(); 
+       }
+        // console.log(updateRes)
     } catch (error) {
       toast.error(error?.data?.message)
     }
@@ -67,7 +67,7 @@ const MyProfile = () => {
           <div className="flex flex-col items-center gap-4">
 
             <motion.img
-              src={myData.photo}
+              src={user?.photoURL}
               alt="profile"
               className="w-32 h-32 rounded-full object-cover border-4 border-primary shadow-md"
               initial={{ scale: 0 }}
@@ -76,7 +76,7 @@ const MyProfile = () => {
             />
 
             <h3 className="text-2xl font-semibold flex items-center gap-2">
-              <FiUser /> {myData.name}
+              <FiUser /> {user?.displayName}
             </h3>
 
             <p className="text-gray-600 flex items-center gap-2">
@@ -96,14 +96,14 @@ const MyProfile = () => {
           animate={{ opacity: 1, x: 0 }}
           className="card bg-base-100 shadow-xl p-6 rounded-xl"
         >
-          <h3 className="text-2xl font-semibold mb-4">Update Profile</h3>
+          <h3 className="text-2xl font-semibold mb-4">{isLoading ? 'Updating...' : ' Update Profile'}</h3>
 
           {/* Name Input */}
           <label className="form-control mb-4">
             <span className="label-text font-medium">Name</span>
             <input
               type="text"
-              defaultValue={myData?.name}
+              defaultValue={user?.displayName}
               className="input input-bordered"
               {...register('name', { required: 'Name field required'})}
             />
