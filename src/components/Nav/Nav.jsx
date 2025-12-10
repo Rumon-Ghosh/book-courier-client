@@ -1,10 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
+import { IoIosHome } from "react-icons/io";
+import { FaBook } from "react-icons/fa";
+import { MdSpaceDashboard } from "react-icons/md";
+import { FcAbout } from "react-icons/fc";
 
 const Nav = () => {
-  const { user } = useAuth();
+  const { user, logOutUser } = useAuth();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const navigate = useNavigate();
+
+  const handleLogOutUser = async () => {
+    try {
+      await logOutUser();
+      navigate("/");
+      toast.success("User SignOut successful!");
+    } catch (error) {
+      toast(error);
+    }
+  };
 
   useEffect(() => {
     const html = document.querySelector("html");
@@ -19,13 +35,16 @@ const Nav = () => {
   const links = (
     <>
       <li>
-        <NavLink to={`/`}>Home</NavLink>
+        <NavLink to={`/`}><IoIosHome /> Home</NavLink>
       </li>
       <li>
-        <NavLink to={`/books`}>Books</NavLink>
+        <NavLink to={`/books`}><FaBook /> Books</NavLink>
       </li>
       <li>
-        <NavLink to={`/dashboard`}>Dashboard</NavLink>
+        <NavLink to={`/about`}><FcAbout /> About</NavLink>
+      </li>
+      <li>
+       {user && <NavLink to={`/dashboard`}><MdSpaceDashboard /> Dashboard</NavLink>}
       </li>
       <li>
         <label className="swap swap-rotate">
@@ -86,16 +105,27 @@ const Nav = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Assignment 11</a>
+        <Link
+          to={`/`}
+          className="flex items-center">
+          <img className="w-8 h-8" src="https://i.ibb.co/Tx9Hfnhs/icons8-books-48.png" alt="" />
+          <a className="text-lg font-bold">Book<span className="text-primary">Courier</span> </a>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
       <div className="navbar-end">
         {user ? (
-          <img className="w-10 h-10 rounded-full" src={user?.photoURL} alt="USER" />
+          <div className="flex gap-1">
+            <img className="w-10 h-10 rounded-full" src={user?.photoURL} alt="USER" />
+            <button
+              onClick={handleLogOutUser}
+              className="btn btn-primary">LogOut
+            </button>
+          </div>
         ) : (
-          <Link className="btn" to="/login">
+          <Link className="btn btn-primary" to="/login">
             Login
           </Link>
         )}

@@ -11,7 +11,7 @@ const EditBook = () => {
   const navigate = useNavigate();
 
   // Fetch single book
-  const { data: book = {}, isLoading } = useQuery({
+  const { data: book = {}, isLoading, refetch } = useQuery({
     queryKey: ["book", id],
     queryFn: async () => {
       const { data } = await axiosSecure(`/books/${id}`);
@@ -38,6 +38,7 @@ const EditBook = () => {
       if (data.modifiedCount > 0) {
         toast.success("Book updated successfully!");
         navigate("/dashboard/my-books");
+        refetch();
       }
     } catch (error) {
       toast.error("Failed to update the book.");

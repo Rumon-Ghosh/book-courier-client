@@ -63,7 +63,7 @@ const MyOrders = () => {
       orderId: order._id,
       bookId: order.bookId,
       bookName: order.bookName,
-      image: order?.image,
+      image: order.image,
       price: order.price,
       userEmail: order.userEmail,
       userName: order.userName,
@@ -83,6 +83,7 @@ const MyOrders = () => {
 
   if (isLoading) return <LoadingSpinner />;
 
+  // console.log(orders)
   // const formatDate = (date) =>
   //   new Date(date).toLocaleDateString("en-US", {
   //     year: "numeric",
@@ -97,13 +98,19 @@ const MyOrders = () => {
         📚 Your Book Orders
       </h3>
 
+      {orders.length === 0 && (
+          <p className="text-lg text-center my-3">
+            No Orders Get Yet. Please Stay With Us!
+          </p>
+        )}
+
       {/* Mobile Cards Layout */}
       <div className="md:hidden">
         {orders.map((order) => (
           <div key={order._id} className="card bg-base-100 shadow-lg mb-4 p-4">
             <h2 className="font-semibold text-lg">{order.bookName}</h2>
-            <p className="text-sm text-gray-500">
-              Order Date: {order.createdAt}
+            <p className="text-sm">
+              Order Date: {new Date(order.createdAt).toLocaleDateString()}
             </p>
             <p className="mt-1">
               Status:{" "}
@@ -167,7 +174,7 @@ const MyOrders = () => {
               <tr key={order._id}>
                 <td>{index + 1}</td>
                 <td className="font-semibold">{order.bookName}</td>
-                <td>{order.createdAt}</td>
+                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td className="font-medium">
                   {order.paymentStatus}
                 </td>
@@ -187,30 +194,26 @@ const MyOrders = () => {
 
                 {/* Cancel Button */}
                 <td>
-                  {order.orderStatus === "pending" ? (
+                  {order.orderStatus === "pending" && (
                     <button
                       onClick={() => handleCancelOrder(order._id)}
                       className="btn btn-error btn-sm"
                     >
                       Cancel
                     </button>
-                  ) : (
-                    <span className="text-gray-400">—</span>
                   )}
                 </td>
 
                 {/* Pay Button */}
                 <td>
-                  {order.orderStatus === "pending" &&
-                  order.paymentStatus === "unpaid" ? (
+                  {(order.orderStatus === "pending" &&
+                  order.paymentStatus === "unpaid") && (
                     <button
                       onClick={() => handlePayment(order)}
                       className="btn btn-primary btn-sm"
                     >
                       Pay Now
                     </button>
-                  ) : (
-                    <span className="text-gray-400">—</span>
                   )}
                 </td>
               </tr>

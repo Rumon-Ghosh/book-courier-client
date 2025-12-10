@@ -20,9 +20,8 @@ const ManageBooks = () => {
     },
   });
 
-  // -------------------------------
+ 
   // Publish / Unpublish Handler
-  // -------------------------------
   const handlePublishOrUnpublish = async (id, status) => {
     try {
       const { data } = await axiosSecure.patch(

@@ -19,11 +19,15 @@ import EditBook from "../pages/Dashboard/LibrarianPages/EditBook/EditBook";
 import ManageBooks from "../pages/Dashboard/AdminPages/ManageBooks/ManageBooks";
 import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancel from "../pages/Dashboard/Payment/PaymentCancel";
+import MyInvoice from "../pages/Dashboard/UserPages/MyInvoice/MyInvoice";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
+import AboutPage from "../pages/Home/AboutPage/AboutPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout></MainLayout>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         index: true,
@@ -32,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: "/books",
         element: <Books></Books>,
+      },
+      {
+        path: "/about",
+        element: <AboutPage></AboutPage>,
       },
       {
         path: "/book/:id",
@@ -72,6 +80,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyWishlist></MyWishlist>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "my-invoice",
+        element: (
+          <PrivateRoute>
+            <MyInvoice></MyInvoice>
           </PrivateRoute>
         ),
       },

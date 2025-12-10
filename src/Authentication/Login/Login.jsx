@@ -26,7 +26,11 @@ const Login = () => {
         if (LoggedIn) {
           // console.log(LoggedIn)
           toast.success("LogIn successful")
-          navigate(from, {replace: true})
+          if (from.includes('/dashboard')) {
+            navigate('/')
+          } else {
+            navigate(from, {replace: true})
+          }
         }
     } catch (err) {
       toast.error(err)

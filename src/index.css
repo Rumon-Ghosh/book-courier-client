@@ -2,5 +2,9 @@
 @plugin "daisyui";
 @plugin "daisyui/theme" {
   --color-primary: blue;
-  --color-secondary: teal;
+}
+
+li a.active {
+  background-color: #24D920;
+  color: #413030;
 }

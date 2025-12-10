@@ -79,7 +79,7 @@ const MyProfile = () => {
               <FiUser /> {user?.displayName}
             </h3>
 
-            <p className="text-gray-600 flex items-center gap-2">
+            <p className="flex items-center gap-2">
               <FiMail /> {myData.email}
             </p>
 

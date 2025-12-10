@@ -51,7 +51,7 @@ const AddBook = () => {
       {/* Heading */}
       <div className="text-center mb-10">
         <h1 className="text-3xl font-bold text-primary">Add a New Book</h1>
-        <p className="text-gray-500 mt-2">
+        <p className="mt-2">
           Fill out the form below to add a new book to the library.
         </p>
       </div>

@@ -19,7 +19,7 @@ const MyBooks = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["writerBooks", user?.email],
+    queryKey: ["writer-books", user?.email],
     queryFn: async () => {
       const result = await axiosSecure.get("/my-books");
       return result.data;
@@ -46,6 +46,12 @@ const MyBooks = () => {
   return (
     <div className="p-4 md:p-8">
       <h2 className="text-3xl font-bold text-center mb-6">📚 My Books</h2>
+
+      {writerBooks.length === 0 && (
+          <p className="text-lg text-center my-3">
+            No Books Added Yet. Please Add Book!
+          </p>
+        )}
 
       <div className="overflow-x-auto shadow-xl rounded-xl">
         <table className="table table-zebra w-full">

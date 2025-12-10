@@ -10,31 +10,30 @@ import useRole from "../hooks/useRole";
 import LoadingSpinner from "../components/LoadingSpinner/LoadingSpinner";
 
 const DashboardLayout = () => {
-  const { logOutUser } = useAuth()
+  const { logOutUser } = useAuth();
   const navigate = useNavigate();
 
   const [role, isRoleLoading] = useRole();
 
-   const [theme] = useState(localStorage.getItem("theme") || "light");
-  
-    useEffect(() => {
-      const html = document.querySelector("html");
-      html.setAttribute("data-theme", theme);
-      localStorage.setItem("theme", theme);
-    }, [theme]);
+  const [theme] = useState(localStorage.getItem("theme") || "light");
 
+  useEffect(() => {
+    const html = document.querySelector("html");
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const handleLogOutUser = async () => {
     try {
       await logOutUser();
-      navigate('/')
+      navigate("/");
       toast.success("User SignOut successful!");
     } catch (error) {
       toast(error);
     }
   };
 
-  if(isRoleLoading) return <LoadingSpinner></LoadingSpinner>
+  if (isRoleLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="drawer lg:drawer-open">
@@ -63,11 +62,19 @@ const DashboardLayout = () => {
               <path d="M14 10l2 2l-2 2"></path>
             </svg>
           </label>
-          <div className="px-4">Assignment 11</div>
+          <Link to={`/`} className="flex items-center">
+            <img
+              className="w-8 h-8"
+              src="https://i.ibb.co/Tx9Hfnhs/icons8-books-48.png"
+              alt=""
+            />
+            <a className="text-lg font-bold">
+              Book<span className="text-primary">Courier</span>{" "}
+            </a>
+          </Link>
         </nav>
         {/* Page content here */}
         <Outlet></Outlet>
-
       </div>
 
       <div className="drawer-side is-drawer-close:overflow-visible">
@@ -82,9 +89,9 @@ const DashboardLayout = () => {
             {/* List item */}
             <li>
               <Link
-                to={`/`}
+                to={`/dashboard`}
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Homepage"
+                data-tip="Dashboard-Home"
               >
                 {/* Home icon */}
                 <svg
@@ -103,9 +110,9 @@ const DashboardLayout = () => {
                 <span className="is-drawer-close:hidden">Homepage</span>
               </Link>
             </li>
-            {role === 'user' && <UserMenu></UserMenu>}
-            {role === 'librarian' && <LibrarianMenu></LibrarianMenu>}
-            {role === 'admin' && <AdminMenu></AdminMenu>}
+            {role === "user" && <UserMenu></UserMenu>}
+            {role === "librarian" && <LibrarianMenu></LibrarianMenu>}
+            {role === "admin" && <AdminMenu></AdminMenu>}
             {/* List item */}
             <li>
               <button
