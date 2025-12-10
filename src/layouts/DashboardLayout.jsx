@@ -68,9 +68,9 @@ const DashboardLayout = () => {
               src="https://i.ibb.co/Tx9Hfnhs/icons8-books-48.png"
               alt=""
             />
-            <a className="text-lg font-bold">
+            <p className="text-lg font-bold">
               Book<span className="text-primary">Courier</span>{" "}
-            </a>
+            </p>
           </Link>
         </nav>
         {/* Page content here */}

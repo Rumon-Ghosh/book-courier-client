@@ -109,7 +109,7 @@ const Nav = () => {
           to={`/`}
           className="flex items-center">
           <img className="w-8 h-8" src="https://i.ibb.co/Tx9Hfnhs/icons8-books-48.png" alt="" />
-          <a className="text-lg font-bold">Book<span className="text-primary">Courier</span> </a>
+          <p className="text-lg font-bold">Book<span className="text-primary">Courier</span> </p>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">

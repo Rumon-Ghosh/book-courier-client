@@ -22,6 +22,7 @@ import PaymentCancel from "../pages/Dashboard/Payment/PaymentCancel";
 import MyInvoice from "../pages/Dashboard/UserPages/MyInvoice/MyInvoice";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import AboutPage from "../pages/Home/AboutPage/AboutPage";
+import LibrarianRoute from "./LibrarianRoute";
 
 export const router = createBrowserRouter([
   {
@@ -102,9 +103,11 @@ export const router = createBrowserRouter([
       {
         path: "add-book",
         element: (
-          <PrivateRoute>
-            <AddBook></AddBook>
-          </PrivateRoute>
+          <LibrarianRoute>
+            <PrivateRoute>
+              <AddBook></AddBook>
+            </PrivateRoute>
+          </LibrarianRoute>
         ),
       },
       {
@@ -118,9 +121,11 @@ export const router = createBrowserRouter([
       {
         path: "edit-book/:id",
         element: (
-          <PrivateRoute>
-           <EditBook></EditBook>
-          </PrivateRoute>
+          <LibrarianRoute>
+            <PrivateRoute>
+              <EditBook></EditBook>
+            </PrivateRoute>
+          </LibrarianRoute>
         ),
       },
       {
