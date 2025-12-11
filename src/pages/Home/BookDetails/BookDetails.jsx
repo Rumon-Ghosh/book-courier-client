@@ -217,7 +217,7 @@ const BookDetails = () => {
       <div className="mt-10">
         <h3 className="text-2xl font-bold mb-5 flex items-center gap-2">
           <AiFillStar className="text-yellow-500 text-3xl" />
-          Here Is Latest 5 Reviews Of this Book
+          Here Is Latest 5 Reviews Of This Book
         </h3>
 
         {reviews.length === 0 && (

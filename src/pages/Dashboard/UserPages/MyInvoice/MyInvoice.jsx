@@ -18,14 +18,6 @@ const MyInvoice = () => {
 
   if (isLoading || loading) return <LoadingSpinner />;
 
-  // Format date nicely
-  const formatDate = (date) =>
-    new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-
   return (
     <div className="p-4 md:p-6">
       {/* Heading */}
@@ -48,7 +40,7 @@ const MyInvoice = () => {
 
             <p className="text-sm">
               <span className="font-medium">Paid Date:</span>{" "}
-              {formatDate(inv.paidAt)}
+              {new Date(inv.paidAt).toDateString()}
             </p>
 
             <p className="text-sm wrap-break-words">
@@ -78,7 +70,7 @@ const MyInvoice = () => {
                 <td>{index + 1}</td>
                 <td className="font-medium">{inv.bookName}</td>
                 <td>${inv.price}</td>
-                <td>{formatDate(inv.paidAt)}</td>
+                <td>{new Date(inv.paidAt).toDateString()}</td>
                 <td className="wrap-break-words text-sm">{inv.transactionId}</td>
               </tr>
             ))}

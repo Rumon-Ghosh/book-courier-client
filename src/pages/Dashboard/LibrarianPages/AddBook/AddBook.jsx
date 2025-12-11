@@ -115,7 +115,7 @@ const AddBook = () => {
               <span className="label-text font-medium">Price (৳)</span>
             </label>
             <input
-              type="number"
+              type="text"
               placeholder="Enter price"
               className="input input-bordered w-full"
               {...register("price", { required: true })}

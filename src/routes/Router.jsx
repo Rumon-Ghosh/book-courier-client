@@ -23,6 +23,7 @@ import MyInvoice from "../pages/Dashboard/UserPages/MyInvoice/MyInvoice";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import AboutPage from "../pages/Home/AboutPage/AboutPage";
 import LibrarianRoute from "./LibrarianRoute";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -103,36 +104,40 @@ export const router = createBrowserRouter([
       {
         path: "add-book",
         element: (
-          <LibrarianRoute>
-            <PrivateRoute>
+          <PrivateRoute>
+            <LibrarianRoute>
               <AddBook></AddBook>
-            </PrivateRoute>
-          </LibrarianRoute>
+              </LibrarianRoute>
+          </PrivateRoute>
         ),
       },
       {
         path: "my-books",
         element: (
           <PrivateRoute>
-            <MyBooks></MyBooks>
+            <LibrarianRoute>
+              <MyBooks></MyBooks> 
+            </LibrarianRoute>
           </PrivateRoute>
         ),
       },
       {
         path: "edit-book/:id",
         element: (
-          <LibrarianRoute>
-            <PrivateRoute>
+          <PrivateRoute>
+            <LibrarianRoute>
               <EditBook></EditBook>
-            </PrivateRoute>
-          </LibrarianRoute>
+            </LibrarianRoute>
+          </PrivateRoute>
         ),
       },
       {
         path: "orders-collection",
         element: (
           <PrivateRoute>
-            <OwnerOrder></OwnerOrder>
+            <LibrarianRoute>
+              <OwnerOrder></OwnerOrder>
+            </LibrarianRoute>
           </PrivateRoute>
         ),
       },
@@ -140,7 +145,9 @@ export const router = createBrowserRouter([
         path: "all-users",
         element: (
           <PrivateRoute>
-            <AllUsers></AllUsers>
+            <AdminRoute>
+              <AllUsers></AllUsers>
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
@@ -148,7 +155,9 @@ export const router = createBrowserRouter([
         path: "manage-books",
         element: (
           <PrivateRoute>
-            <ManageBooks></ManageBooks>
+            <AdminRoute>
+              <ManageBooks></ManageBooks>
+            </AdminRoute>
           </PrivateRoute>
         ),
       },

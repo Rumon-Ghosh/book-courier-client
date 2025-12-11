@@ -50,7 +50,7 @@ const MyOrders = () => {
           });
         } catch (error) {
           toast.error("Order cancellation failed!");
-          console.log("Cannot cancel order ->", error);
+          console.log(error);
         }
       }
     });
@@ -83,13 +83,7 @@ const MyOrders = () => {
 
   if (isLoading) return <LoadingSpinner />;
 
-  // console.log(orders)
-  // const formatDate = (date) =>
-  //   new Date(date).toLocaleDateString("en-US", {
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "numeric",
-  //   });
+
 
   return (
     <div className="p-4">
@@ -98,12 +92,7 @@ const MyOrders = () => {
         📚 Your Book Orders
       </h3>
 
-      {orders.length === 0 && (
-          <p className="text-lg text-center my-3">
-            No Orders Get Yet. Please Stay With Us!
-          </p>
-        )}
-
+      
       {/* Mobile Cards Layout */}
       <div className="md:hidden">
         {orders.map((order) => (
@@ -220,6 +209,12 @@ const MyOrders = () => {
             ))}
           </tbody>
         </table>
+        {orders.length === 0 && (
+          <p className="text-lg text-center mt-6">
+            No Orders Get Yet. Please Order Your Favorite Books!.
+          </p>
+        )}
+
       </div>
     </div>
   );

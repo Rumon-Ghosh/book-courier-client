@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Login = () => {
-  const { googleSignIn, logInUser, loading } = useAuth();
+  const { googleSignIn, logInUser, loading, setLoading } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate()
   const location = useLocation()
@@ -33,7 +33,9 @@ const Login = () => {
           }
         }
     } catch (err) {
-      toast.error(err)
+      toast.error("Give Correct Email/Password")
+      console.log(err.message);
+      setLoading(false)
     }
   }
 
@@ -52,107 +54,113 @@ const Login = () => {
       await axiosSecure.post('/users', userInfo)
      
       // console.log(result)
-      navigate(from, { replace: true })
       toast.success('Login Successful')
+      if (from.includes('/dashboard')) {
+            navigate('/')
+          } else {
+            navigate(from, {replace: true})
+          }
     } catch (err) {
-      console.log(err)
       toast.error(err?.message)
+      console.log(err)
     }
   }
 
   if (loading) return <LoadingSpinner></LoadingSpinner>;
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
-      <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
-        <div className="mb-8 text-center">
-          <h1 className="my-3 text-4xl font-bold">Log In</h1>
-          <p className="text-sm text-gray-400">
-            Sign in to access your account
+    <div className="flex min-h-screen bg-gray-50">
+      {/* LEFT IMAGE SIDE */}
+      <div className="hidden lg:flex w-1/2 justify-center items-center p-10">
+        <img
+          src="https://i.ibb.co/tpt5JCTN/images.jpg"
+          alt="Login visual"
+          className="w-full max-w-lg rounded-xl shadow-lg"
+        />
+      </div>
+
+      {/* RIGHT FORM SIDE */}
+      <div className="w-full lg:w-1/2 flex justify-center items-center p-8">
+        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow">
+          {/* HOME BUTTON */}
+          <button
+            onClick={() => navigate("/")}
+            className="text-sm mb-4 text-lime-600 underline"
+          >
+            ← Back to Home
+          </button>
+
+          <h1 className="text-4xl font-bold text-center mb-2">Login</h1>
+          <p className="text-center text-gray-500 mb-6">
+            Access your BookCourier account
           </p>
-        </div>
-        <form
-          onSubmit={handleSubmit(handlePasswordLogin)}
-          noValidate=""
-          action=""
-          className="space-y-6 ng-untouched ng-pristine ng-valid"
-        >
-          <div className="space-y-4">
+
+          <form
+            onSubmit={handleSubmit(handlePasswordLogin)}
+            className="space-y-5"
+          >
+            {/* Email */}
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm">
-                Email address
-              </label>
+              <label className="block mb-1 text-sm font-medium">Email</label>
               <input
                 type="email"
-                id="email"
-                {...register('email', {required: true})}
-                placeholder="Enter Your Email Here"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
-                data-temp-mail-org="0"
+                {...register("email", { required: true })}
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 border rounded-md bg-gray-100 focus:outline-lime-500"
               />
-              {errors?.email &&  <p className='text-red-500 mt-1'>Email field cannot be empty</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm">Email is required</p>
+              )}
             </div>
+
+            {/* Password */}
             <div>
-              <div className="flex justify-between">
-                <label htmlFor="password" className="text-sm mb-2">
-                  Password
-                </label>
-              </div>
+              <label className="block mb-1 text-sm font-medium">Password</label>
               <input
                 type="password"
-                autoComplete="current-password"
-                id="password"
-                {...register('password', {required: true})}
+                {...register("password", { required: true })}
                 placeholder="*******"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
+                className="w-full px-3 py-2 border rounded-md bg-gray-100 focus:outline-lime-500"
               />
-              {errors?.password &&  <p className='text-red-500 mt-1'>Password field cannot be empty</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm">Password is required</p>
+              )}
             </div>
-          </div>
 
-          <div>
+            {/* Submit */}
             <button
               type="submit"
-              className="bg-lime-500 w-full rounded-md py-3 text-white"
+              className="bg-lime-500 w-full py-3 rounded-md text-white font-semibold"
             >
               {loading ? (
                 <TbFidgetSpinner className="animate-spin m-auto" />
               ) : (
-                "Continue"
+                "Login"
               )}
             </button>
-          </div>
-        </form>
-        <div className="space-y-1">
-          <button className="text-xs hover:underline hover:text-lime-500 text-gray-400 cursor-pointer">
-            Forgot password?
-          </button>
-        </div>
-        <div className="flex items-center pt-4 space-x-1">
-          <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
-          <p className="px-3 text-sm dark:text-gray-400">
-            Login with social accounts
-          </p>
-          <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
-        </div>
-        <div
-          onClick={handleGoogleSignIn}
-          className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer"
-        >
-          <FcGoogle size={32} />
+          </form>
 
-          <p>Continue with Google</p>
-        </div>
-        <p className="px-6 text-sm text-center text-gray-400">
-          Don&apos;t have an account yet?{" "}
-          <Link
-            state={from}
-            to="/signup"
-            className="hover:underline hover:text-lime-500 text-gray-600"
+          <div className="flex items-center py-4 space-x-2">
+            <div className="flex-1 h-px bg-gray-300"></div>
+            <p className="text-sm text-gray-500">or</p>
+            <div className="flex-1 h-px bg-gray-300"></div>
+          </div>
+
+          {/* Google Login */}
+          <div
+            onClick={handleGoogleSignIn}
+            className="flex justify-center items-center space-x-2 border p-2 rounded-md cursor-pointer hover:bg-gray-50"
           >
-            Sign up
-          </Link>
-          .
-        </p>
+            <FcGoogle size={28} />
+            <p className="font-medium">Continue with Google</p>
+          </div>
+
+          <p className="text-center text-sm text-gray-500 mt-4">
+            Don’t have an account?{" "}
+            <Link to="/signup" state={from} className="text-lime-600 underline">
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

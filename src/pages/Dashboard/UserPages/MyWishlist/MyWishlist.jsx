@@ -55,12 +55,6 @@ const MyWishlist = () => {
         Here Is Your WishList
       </h3>
       <div className="overflow-x-auto">
-        {myWishlists.length === 0 && (
-          <p className="text-lg text-center my-3">
-            You Don't Add Any Book To WishList Yet! Make A WishLis Of Your
-            Favorite Books!
-          </p>
-        )}
 
         <table className="table table-zebra overflow-x-scroll">
           {/* head */}
@@ -98,6 +92,12 @@ const MyWishlist = () => {
             ))}
           </tbody>
         </table>
+         {myWishlists.length === 0 && (
+          <p className="text-lg text-center mt-6">
+            You Don't Add Any Book To WishList Yet! Make A WishLis Of Your
+            Favorite Books!
+          </p>
+        )}
       </div>
     </div>
   );

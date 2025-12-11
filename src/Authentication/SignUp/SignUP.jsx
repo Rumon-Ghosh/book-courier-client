@@ -14,7 +14,7 @@ const SignUP = () => {
     useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   const from = location.state || "/";
 
@@ -27,29 +27,29 @@ const SignUP = () => {
   // register user using email and password
   const handleRegister = async (data) => {
     const { name, image, email, password } = data;
-    // console.log({ name, image, email, password })
     const imageFile = image[0];
     try {
-      // ImgBB image upload
       const photoURL = await uploadImage(imageFile);
 
-      // save user to database
       const userInfo = {
         name: name,
         email: email,
         photo: photoURL,
-        role: 'user'
-      }
-      await axiosSecure.post('/users', userInfo)
+        role: "user",
+      };
 
-      // confirming the registration of user
+      await axiosSecure.post("/users", userInfo);
+
       const result = await registerUser(email, password);
 
-      // updating the profile ot user
       if (result.user) {
         await updateUser(name, photoURL);
         toast.success("User SignUp successful");
-        navigate(from, {replace: true});
+        if (from.includes('/dashboard')) {
+            navigate('/')
+          } else {
+            navigate(from, {replace: true})
+          }
       }
     } catch (error) {
       toast.error(error.message || "Registration failed!");
@@ -57,170 +57,165 @@ const SignUP = () => {
     }
   };
 
-  //google login
+  // google login
   const handleGoogleSignIn = async () => {
     try {
       const result = await googleSignIn();
 
-      // save user to database
       const userInfo = {
         name: result?.user?.displayName,
         email: result?.user?.email,
         photo: result?.user?.photoURL,
-        role: 'user'
-      }
-      await axiosSecure.post('/users', userInfo)
-      navigate(from, { replace: true });
+        role: "user",
+      };
+
+      await axiosSecure.post("/users", userInfo);
       toast.success("Login Successful");
+      if (from.includes('/dashboard')) {
+            navigate('/')
+          } else {
+            navigate(from, {replace: true})
+          }
     } catch (err) {
-      // console.log(err);
       toast.error(err?.message);
     }
   };
 
-  if (loading) return <LoadingSpinner></LoadingSpinner>;
+  if (loading) return <LoadingSpinner />;
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
-      <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
-        <div className="mb-8 text-center">
-          <h1 className="my-3 text-4xl font-bold">Sign Up</h1>
-          <p className="text-sm text-gray-400">Welcome to BookCourier</p>
-        </div>
-        <form
-          onSubmit={handleSubmit(handleRegister)}
-          noValidate=""
-          action=""
-          className="space-y-6 ng-untouched ng-pristine ng-valid"
-        >
-          <div className="space-y-4">
+    <div className="min-h-screen flex bg-base-200">
+
+      {/* Left Side Image */}
+      <div className="hidden lg:flex flex-1 items-center justify-center p-10 bg-white">
+        <img
+          src="https://i.ibb.co/PvYBrLCT/images.jpg"
+          alt="Signup Illustration"
+          className="w-4/5 object-cover rounded-3xl drop-shadow-lg"
+        />
+      </div>
+
+      {/* Right Side Form */}
+      <div className="flex-1 flex items-center justify-center p-6">
+        <div className="w-full max-w-md bg-base-100 p-8 rounded-xl shadow-xl">
+
+          {/* Back to Home */}
+          <Link to="/" className="btn btn-sm btn-outline mb-4">
+            ← Back to Home
+          </Link>
+
+          <h1 className="text-3xl font-bold text-center">Create an Account</h1>
+          <p className="mt-2 text-center text-gray-500">
+            Join BookCourier — your gateway to books.
+          </p>
+
+          <form
+            onSubmit={handleSubmit(handleRegister)}
+            className="space-y-4 mt-6"
+          >
+            {/* Name */}
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm">
-                Name
-              </label>
+              <label className="text-sm font-medium">Full Name</label>
               <input
                 type="text"
-                id="name"
-                placeholder="Enter Your Name Here"
                 {...register("name", { required: true })}
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
-                data-temp-mail-org="0"
+                placeholder="Enter your name"
+                className="input input-bordered w-full"
               />
-              {errors?.name && (
-                <p className="text-red-500 mt-1">Name field cannot be empty</p>
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">
+                  Name is required.
+                </p>
               )}
             </div>
-            {/* Image */}
+
+            {/* Image Upload */}
             <div>
-              <label
-                htmlFor="image"
-                className="block mb-2 text-sm font-medium text-gray-700"
-              >
-                Profile Image
-              </label>
+              <label className="text-sm font-medium">Profile Image</label>
               <input
                 type="file"
-                id="image"
                 {...register("image", { required: true })}
                 accept="image/*"
-                className="block w-full text-sm text-gray-500
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-md file:border-0
-      file:text-sm file:font-semibold
-      file:bg-lime-50 file:text-lime-700
-      hover:file:bg-lime-100
-      bg-gray-100 border border-dashed border-lime-300 rounded-md cursor-pointer
-      focus:outline-none focus:ring-2 focus:ring-lime-400 focus:border-lime-400
-      py-2"
+                className="file-input file-input-bordered w-full"
               />
-              {errors?.image && (
-                <p className="text-red-500 mt-1">Image field cannot be empty</p>
+              {errors.image && (
+                <p className="text-red-500 text-sm mt-1">
+                  Profile image is required.
+                </p>
               )}
-              <p className="mt-1 text-xs text-gray-400">
-                PNG, JPG or JPEG (max 2MB)
-              </p>
             </div>
+
+            {/* Email */}
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm">
-                Email address
-              </label>
+              <label className="text-sm font-medium">Email</label>
               <input
                 type="email"
-                id="email"
                 {...register("email", { required: true })}
-                placeholder="Enter Your Email Here"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
-                data-temp-mail-org="0"
+                placeholder="Enter your email"
+                className="input input-bordered w-full"
               />
-              {errors?.email && (
-                <p className="text-red-500 mt-1">Email field cannot be empty</p>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  Email is required.
+                </p>
               )}
             </div>
+
+            {/* Password */}
             <div>
-              <div className="flex justify-between">
-                <label htmlFor="password" className="text-sm mb-2">
-                  Password
-                </label>
-              </div>
+              <label className="text-sm font-medium">Password</label>
               <input
                 type="password"
                 autoComplete="new-password"
-                id="password"
                 {...register("password", {
-                  required: "Password field cannot be empty!",
+                  required: "Password is required",
                   pattern: {
                     value:
                       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/,
                     message:
-                      "Password must have 1 UpperCase, 1 LowerCase, 1 Digit and 1 Symbol!",
+                      "Must contain uppercase, lowercase, number & symbol",
                   },
                 })}
                 placeholder="*******"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
+                className="input input-bordered w-full"
               />
-              {errors?.password && (
-                <p className="text-red-500 mt-1">{errors?.password?.message}</p>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
-          </div>
 
-          <div>
-            <button
-              type="submit"
-              className="bg-lime-500 w-full rounded-md py-3 text-white"
-            >
+            {/* Submit */}
+            <button className="btn btn-primary w-full mt-2">
               {loading ? (
-                <TbFidgetSpinner className="animate-spin m-auto" />
+                <TbFidgetSpinner className="animate-spin text-xl" />
               ) : (
-                "Continue"
+                "Create Account"
               )}
             </button>
-          </div>
-        </form>
-        <div className="flex items-center pt-4 space-x-1">
-          <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
-          <p className="px-3 text-sm dark:text-gray-400">
-            Signup with social accounts
-          </p>
-          <div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
-        </div>
-        <div
-          onClick={handleGoogleSignIn}
-          className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer"
-        >
-          <FcGoogle size={32} />
+          </form>
 
-          <p>Continue with Google</p>
-        </div>
-        <p className="px-6 text-sm text-center text-gray-400">
-          Already have an account?{" "}
-          <Link
-            state={from}
-            to="/login"
-            className="hover:underline hover:text-lime-500 text-gray-600"
+          {/* Divider */}
+          <div className="divider">Or continue with</div>
+
+          {/* Google Login */}
+          <button
+            onClick={handleGoogleSignIn}
+            className="btn w-full flex items-center gap-2"
           >
-            Login
-          </Link>
-        </p>
+            <FcGoogle size={28} />
+            Continue with Google
+          </button>
+
+          {/* Login Redirect */}
+          <p className="text-center text-sm mt-4">
+            Already have an account?{" "}
+            <Link to="/login" className="link link-primary">
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

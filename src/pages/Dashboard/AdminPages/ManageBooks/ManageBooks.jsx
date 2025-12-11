@@ -52,12 +52,9 @@ const ManageBooks = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const { data } = await axiosSecure.delete(`/books/delete/${id}`);
-
-          if (data.deletedBooks && data.deletedOrders) {
+          await axiosSecure.delete(`/books/delete/${id}`);
             toast.success("Book & related orders deleted!");
             refetch();
-          }
         } catch (error) {
           toast.error("Delete failed!");
         }

@@ -7,18 +7,24 @@ import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 const Books = () => {
   const [searchText, setSearchText] = useState("");
   const [price, setPrice] = useState("");
+  const [page, setPage] = useState(1)
+  const limit = 10;
 
   const axiosSecure = useAxiosSecure();
 
-  const { data: books = [], isLoading } = useQuery({
-    queryKey: ["all-books", searchText, price],
+  const { data, isLoading } = useQuery({
+    queryKey: ["all-books", searchText, price, page, limit],
     queryFn: async () => {
       const result = await axiosSecure(
-        `/books?search=${searchText}&sort=${price}`
+        `/books?search=${searchText}&sort=${price}&page=${page}&limit=${limit}`
       );
       return result.data;
     },
   });
+
+  const books = data?.books || [];
+  const totalPage = data?.totalPages || 1
+
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +34,7 @@ const Books = () => {
   };
 
   
-
+// console.log(totalPage)
   if (isLoading) return <LoadingSpinner />;
 
   return (
@@ -94,6 +100,18 @@ const Books = () => {
         {books.map((book) => (
           <BookCard key={book._id} book={book} />
         ))}
+      </div>
+      <div className="flex items-center justify-center gap-3">
+        <button
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+          className="btn btn-primary">Prev
+        </button>
+        <p className="text-lg font-bold"> {page}</p>
+        <button
+          disabled={page === totalPage}
+          onClick={() => setPage(page + 1)}
+          className="btn btn-primary">Next</button>
       </div>
     </div>
   );

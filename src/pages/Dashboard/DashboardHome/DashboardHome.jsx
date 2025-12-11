@@ -1,5 +1,6 @@
 import React from "react";
 import { FaRegSmile, FaRegFolderOpen, FaRegClock, FaChartLine } from "react-icons/fa";
+import OrdersChart from "../../../components/OrdersCharts/OrdersCharts";
 
 const DashboardHome = () => {
   return (
@@ -46,6 +47,8 @@ const DashboardHome = () => {
         </div>
 
       </div>
+
+      <OrdersChart></OrdersChart>
 
       {/* Footer message */}
       <p className="mt-10 text-gray-500 text-sm flex items-center gap-1">

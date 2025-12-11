@@ -6,11 +6,11 @@ import ForbiddenPage from '../components/ForbiddenPage/ForbiddenPage';
 import useAuth from '../hooks/useAuth';
 const LibrarianRoute = ({children}) => {
   const [role, isRoleLoading] = useRole();
-  const { loading } = useAuth()
+  const { loading, user } = useAuth()
 
   if(isRoleLoading || loading) return <LoadingSpinner></LoadingSpinner>
   
-  if(role === 'librarian') return children 
+  if(role === 'librarian' && user) return children 
 
   return <ForbiddenPage></ForbiddenPage>;
 };
