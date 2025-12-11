@@ -85,7 +85,7 @@ const BookDetails = () => {
         reset();
       }
     } catch (err) {
-      toast.error("Something went wrong!");
+      toast.error("Error-> Order can't send!");
     }
   };
 
