@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const CallToAction = () => {
   return (
-     <div className="bg-gradient-to-r from-primary to-secondary text-white py-20 px-4">
+     <div className="bg-gradient-to-r from-primary to-secondary text-white py-10 md:py-20 px-4">
       <div className="max-w-4xl mx-auto text-center">
         {/* Heading */}
         <h2 className="text-3xl md:text-4xl font-bold">

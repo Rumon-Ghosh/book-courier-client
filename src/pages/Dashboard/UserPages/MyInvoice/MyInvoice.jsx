@@ -26,7 +26,7 @@ const MyInvoice = () => {
       </h3>
 
       {/* Mobile Cards */}
-      <div className="md:hidden space-y-4">
+      <div className="md:hidden space-y-4 overflow-x-auto">
         {invoices.map((inv) => (
           <div
             key={inv._id}
@@ -52,7 +52,7 @@ const MyInvoice = () => {
       </div>
 
       {/* Desktop Table */}
-      <div className="hidden md:block overflow-x-auto">
+      <div className="hidden md:block">
         <table className="table table-zebra w-full">
           <thead className="text-base">
             <tr>

@@ -38,7 +38,7 @@ const AboutPage = () => {
       <section>
         <h2 className="text-2xl font-semibold mb-8">What Makes Us Different</h2>
 
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
           <div className="bg-base-100 shadow-lg p-6 rounded-xl text-center hover:shadow-xl transition">
             <FaBook className="text-4xl text-primary mx-auto mb-4" />

@@ -56,7 +56,7 @@ const MyWishlist = () => {
       </h3>
       <div className="overflow-x-auto">
 
-        <table className="table table-zebra overflow-x-scroll">
+        <table className="table table-zebra">
           {/* head */}
           <thead>
             <tr>

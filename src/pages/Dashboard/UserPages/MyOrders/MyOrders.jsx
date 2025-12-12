@@ -101,6 +101,9 @@ const MyOrders = () => {
             <p className="text-sm">
               Order Date: {new Date(order.createdAt).toLocaleDateString()}
             </p>
+            <p className="text-sm">
+              Payment Status: <span className="badge badge-neutral">{order.paymentStatus}</span>
+            </p> 
             <p className="mt-1">
               Status:{" "}
               <span
@@ -144,7 +147,7 @@ const MyOrders = () => {
       </div>
 
       {/* Desktop Table Layout */}
-      <div className="overflow-x-auto hidden md:block">
+      <div className="hidden md:block">
         <table className="table table-zebra w-full">
           <thead className="text-base">
             <tr>

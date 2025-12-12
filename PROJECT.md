@@ -4,7 +4,7 @@
 BookCourier is a complete book-ordering platform where users can browse books, search, sort, order, make payments, and manage their dashboard. It also supports admin and librarian features for managing books and users.
 
 <!-- live URL -->
-## Live URL:
+## Live URL: https://assignment-11-3cad8.web.app
 
 ## Key Features:
 Browse all published books

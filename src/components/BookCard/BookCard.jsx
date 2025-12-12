@@ -13,7 +13,7 @@ const BookCard = ({ book }) => {
     >
       <Link to={`/book/${book._id}`}>
         {/* Image */}
-        <figure className="h-56 overflow-hidden">
+        <figure className="h-56">
           <motion.img
             whileHover={{ scale: 1.08 }}
             transition={{ duration: 0.5 }}

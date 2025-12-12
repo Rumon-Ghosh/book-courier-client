@@ -117,7 +117,7 @@ const Nav = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <div className="flex gap-1">
+          <div className="flex gap-1 items-center">
             <img className="w-10 h-10 rounded-full" src={user?.photoURL} alt="USER" />
             <button
               onClick={handleLogOutUser}

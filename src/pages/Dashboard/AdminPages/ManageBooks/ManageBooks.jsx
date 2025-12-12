@@ -8,7 +8,11 @@ import Swal from "sweetalert2";
 const ManageBooks = () => {
   const axiosSecure = useAxiosSecure();
 
-  const { data: books = [], isLoading, refetch } = useQuery({
+  const {
+    data: books = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["manage-books"],
     queryFn: async () => {
       try {
@@ -20,14 +24,12 @@ const ManageBooks = () => {
     },
   });
 
- 
   // Publish / Unpublish Handler
   const handlePublishOrUnpublish = async (id, status) => {
     try {
-      const { data } = await axiosSecure.patch(
-        `/books/update-status/${id}`,
-        { status }
-      );
+      const { data } = await axiosSecure.patch(`/books/update-status/${id}`, {
+        status,
+      });
 
       if (data.modifiedCount > 0) {
         toast.success(`Book ${status} successfully!`);
@@ -53,8 +55,8 @@ const ManageBooks = () => {
       if (result.isConfirmed) {
         try {
           await axiosSecure.delete(`/books/delete/${id}`);
-            toast.success("Book & related orders deleted!");
-            refetch();
+          toast.success("Book & related orders deleted!");
+          refetch();
         } catch (error) {
           toast.error("Delete failed!");
         }
@@ -151,7 +153,6 @@ const ManageBooks = () => {
                     Delete
                   </button>
                 </td>
-
               </tr>
             ))}
           </tbody>

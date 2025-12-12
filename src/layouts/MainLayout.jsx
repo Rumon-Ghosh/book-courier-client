@@ -6,10 +6,10 @@ import Nav from '../components/Nav/Nav';
 
 const MainLayout = () => {
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div>
       {/* <Navbar></Navbar> */}
       <Nav></Nav>
-      <div className='flex-1'>
+      <div>
         <Outlet></Outlet>
       </div>
       <Footer></Footer>

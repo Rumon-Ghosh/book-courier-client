@@ -10,13 +10,16 @@ import CallToAction from "../../components/Home/CallToAction/CallToAction";
 const Home = () => {
   return (
     <div>
-      <Slider></Slider>
-      <LatestBooks></LatestBooks>
+      <Slider></Slider> 
+      <LatestBooks>
+      </LatestBooks>
       <WhyUs></WhyUs>
-      <Testimonials></Testimonials>
+      <Testimonials>
+      </Testimonials>
       <Map></Map>
       <FAQ></FAQ>
-      <CallToAction></CallToAction>
+      <CallToAction>
+      </CallToAction>
     </div>
   );
 };
