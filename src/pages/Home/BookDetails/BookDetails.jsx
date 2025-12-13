@@ -165,6 +165,11 @@ const BookDetails = () => {
             <span className="badge badge-primary">{book.category}</span>
           </div>
 
+          <div className="flex gap-5 items-center">
+            <p className="text-lg font-medium">Added by: </p>
+            <span className="badge badge-info">{book.createdBy}</span>
+          </div>
+
           <p className="mt-2">{book.description}</p>
 
           <p className="text-2xl font-semibold">৳ {book.price}</p>

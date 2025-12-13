@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useAuth from "../../../../hooks/useAuth";
 import toast from "react-hot-toast";
@@ -9,6 +9,9 @@ import { motion } from "framer-motion";
 const OwnerOrder = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const limit = 10;
 
   // Fetch orders
   const {
@@ -16,10 +19,11 @@ const OwnerOrder = () => {
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: ["ownerOrders", user?.email],
+    queryKey: ["ownerOrders", user?.email, page, totalPage, limit],
     queryFn: async () => {
-      const result = await axiosSecure.get("/orders/owner");
-      return result.data;
+      const result = await axiosSecure.get(`/orders/owner?page=${page}&limit=${limit}`);
+      setTotalPage(result.data.totalPages)
+      return result.data.result;
     },
   });
 
@@ -89,7 +93,7 @@ const OwnerOrder = () => {
 
                 {/* Status Dropdown */}
                 <td>
-                  {order.orderStatus !== "cancelled" && (
+                  {order.orderStatus !== "cancelled" ? (
                     <select
                       className="select select-bordered select-sm"
                       value={order.orderStatus}
@@ -101,7 +105,7 @@ const OwnerOrder = () => {
                       <option value="shipped">Shipped</option>
                       <option value="delivered">Delivered</option>
                     </select>
-                  )}
+                  ) : <p className="text-red-600 text-lg">Cancelled</p> }
                 </td>
 
                 <td>{new Date(order.createdAt).toLocaleDateString()}</td>
@@ -120,6 +124,21 @@ const OwnerOrder = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="flex items-center justify-center gap-3 mt-5">
+        <button
+          className="btn btn-outline"
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+        >Prev
+        </button>
+        {page}
+        <button
+          className="btn btn-outline"
+          onClick={() => setPage(page + 1)}
+          disabled={page === totalPage}
+        >Next
+        </button>
       </div>
     </div>
   );

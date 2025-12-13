@@ -132,8 +132,8 @@ const MyOrders = () => {
               )}
 
               {/* Pay Now */}
-              {order.orderStatus === "pending" &&
-                order.paymentStatus === "unpaid" && (
+              {(order.orderStatus !== "cancelled" &&
+                order.paymentStatus === "unpaid") && (
                   <button
                     onClick={() => handlePayment(order)}
                     className="btn btn-primary btn-sm w-full"
@@ -198,7 +198,7 @@ const MyOrders = () => {
 
                 {/* Pay Button */}
                 <td>
-                  {(order.orderStatus === "pending" &&
+                  {(order.orderStatus !== "cancelled" &&
                   order.paymentStatus === "unpaid") && (
                     <button
                       onClick={() => handlePayment(order)}

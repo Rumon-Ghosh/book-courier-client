@@ -68,7 +68,7 @@ const Login = () => {
 
   if (loading) return <LoadingSpinner></LoadingSpinner>;
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen">
       {/* LEFT IMAGE SIDE */}
       <div className="hidden lg:flex w-1/2 justify-center items-center p-10">
         <img
@@ -80,7 +80,7 @@ const Login = () => {
 
       {/* RIGHT FORM SIDE */}
       <div className="w-full lg:w-1/2 flex justify-center items-center p-8">
-        <div className="w-full max-w-md bg-white p-8 rounded-xl shadow">
+        <div className="w-full max-w-md p-8 rounded-xl shadow">
           {/* HOME BUTTON */}
           <button
             onClick={() => navigate("/")}
@@ -90,7 +90,7 @@ const Login = () => {
           </button>
 
           <h1 className="text-4xl font-bold text-center mb-2">Login</h1>
-          <p className="text-center text-gray-500 mb-6">
+          <p className="text-center mb-6">
             Access your BookCourier account
           </p>
 
@@ -105,7 +105,7 @@ const Login = () => {
                 type="email"
                 {...register("email", { required: true })}
                 placeholder="Enter your email"
-                className="w-full px-3 py-2 border rounded-md bg-gray-100 focus:outline-lime-500"
+                className="w-full px-3 py-2 border rounded-md"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm">Email is required</p>
@@ -119,7 +119,7 @@ const Login = () => {
                 type="password"
                 {...register("password", { required: true })}
                 placeholder="*******"
-                className="w-full px-3 py-2 border rounded-md bg-gray-100 focus:outline-lime-500"
+                className="w-full px-3 py-2 border rounded-md"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm">Password is required</p>

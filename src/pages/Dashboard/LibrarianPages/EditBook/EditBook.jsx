@@ -4,6 +4,7 @@ import LoadingSpinner from "../../../../components/LoadingSpinner/LoadingSpinner
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
+import { MdCancel } from "react-icons/md";
 
 const EditBook = () => {
   const axiosSecure = useAxiosSecure();
@@ -51,7 +52,7 @@ const EditBook = () => {
     <div className="max-w-3xl mx-auto p-6 shadow-xl bg-base-100 rounded-xl mt-5">
       <h2 className="text-3xl font-bold text-center mb-6">✏️ Edit Book</h2>
 
-      <form onSubmit={handleUpdateBook} className="space-y-4">
+      <form onSubmit={handleUpdateBook} className="space-y-4 relative">
         {/* Book Name */}
         <div>
           <label className="label">
@@ -125,6 +126,11 @@ const EditBook = () => {
 
         {/* Submit Button */}
         <button className="btn btn-primary w-full mt-4">Update Book</button>
+        <button
+          onClick={() => navigate(-1)}
+          type="button"
+          className="btn-xs btn-outline absolute right-2.5 -top-10">
+          <MdCancel /></button>
       </form>
     </div>
   );

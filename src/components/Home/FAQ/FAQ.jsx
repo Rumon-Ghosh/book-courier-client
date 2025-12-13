@@ -3,7 +3,7 @@ import React from "react";
 const FAQ = () => {
   return (
     <div className="bg-base-200 py-20 md:py-15">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-5xl mx-auto px-4">
         
         {/* Heading */}
         <div className="text-center mb-8">

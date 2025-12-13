@@ -14,7 +14,7 @@ const Footer = () => {
             <a className="link link-hover">Home</a>
             <a className="link link-hover">Books</a>
             <a className="link link-hover">Dashboard</a>
-            <a className="link link-hover">Wishlist</a>
+            <a className="link link-hover">Service Area</a>
           </nav>
         </div>
 

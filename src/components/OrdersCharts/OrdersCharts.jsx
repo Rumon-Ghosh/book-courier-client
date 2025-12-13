@@ -30,7 +30,7 @@ const OrdersChart = () => {
   });
 
   return (
-    <div className="bg-base-100 shadow rounded-xl p-6 w-full min-h-[300px] mt-7">
+    <div className="bg-base-100 shadow rounded-xl p-2 md:p-6 w-full min-h-75 mt-7">
       <h2 className="text-xl font-semibold mb-4">Orders Per Month</h2>
 
       <ResponsiveContainer width="100%" height={300}>

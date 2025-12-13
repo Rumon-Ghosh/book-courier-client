@@ -2,16 +2,6 @@
 @plugin "daisyui";
 
 
-@theme {
-  --breakpoint-xs: 40rem;
-  --breakpoint-md: 48rem;
-  --breakpoint-lg: 64rem;
-}
-
-/* @plugin "daisyui/theme" {
-  --color-primary: blue;
-} */
-
 li a.active {
   background-color: #24D920;
   color: #413030;

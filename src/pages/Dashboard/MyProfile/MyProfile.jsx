@@ -44,7 +44,7 @@ const MyProfile = () => {
     }
   }
 
-  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
+  // if (isLoading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
     <div className="w-11/12 mx-auto my-10">
@@ -129,7 +129,7 @@ const MyProfile = () => {
             type="submit"
             className="btn btn-primary w-full mt-4"
           >
-            Update Profile
+            {isLoading ? 'Updating...' : 'Update Profile'}
           </button>
         </motion.form>
       </div>

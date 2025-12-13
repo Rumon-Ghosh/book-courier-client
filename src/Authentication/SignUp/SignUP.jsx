@@ -87,16 +87,16 @@ const SignUP = () => {
     <div className="min-h-screen flex items-center justify-center bg-base-200">
 
       {/* Left Side Image */}
-      {/* <div className="hidden lg:flex flex-1 items-center justify-center p-10 bg-white">
+      <div className="hidden lg:flex flex-1 items-center justify-center p-10">
         <img
           src="https://i.ibb.co/PvYBrLCT/images.jpg"
           alt="Signup Illustration"
           className="w-4/5 object-cover rounded-3xl drop-shadow-lg"
         />
-      </div> */}
+      </div>
 
       {/* Right Side Form */}
-      <div className="flex items-center justify-center p-6">
+      <div className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-md bg-base-100 p-8 rounded-xl shadow-xl">
 
           {/* Back to Home */}
