@@ -56,7 +56,7 @@ const MyOrders = () => {
     });
   };
 
-  // payment function
+  // payment function to use in stripe
   const handlePayment = async (order) => {
   try {
     const paymentInfo = {
