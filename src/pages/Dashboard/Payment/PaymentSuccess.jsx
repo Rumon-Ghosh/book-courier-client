@@ -8,6 +8,7 @@ const PaymentSuccess = () => {
   const axiosSecure = useAxiosSecure();
   const sessionId = searchParams.get("session_id");
 
+  // after payment send paymentInfo to database
   useEffect(() => {
     axiosSecure.post(`/payment-success`, { sessionId });
   }, [sessionId, axiosSecure]);
