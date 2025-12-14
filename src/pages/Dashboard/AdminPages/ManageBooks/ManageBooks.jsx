@@ -26,18 +26,29 @@ const ManageBooks = () => {
 
   // Publish / Unpublish Handler
   const handlePublishOrUnpublish = async (id, status) => {
-    try {
-      const { data } = await axiosSecure.patch(`/books/update-status/${id}`, {
-        status,
-      });
+     Swal.fire({
+      title: "Are you sure?",
+      text: `Would you like to ${status} this book!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: `Yes, ${status}`,
+      confirmButtonColor: "#d33",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const { data } = await axiosSecure.patch(`/books/update-status/${id}`, {
+            status,
+          });
 
-      if (data.modifiedCount > 0) {
-        toast.success(`Book ${status} successfully!`);
-        refetch();
+          if (data.modifiedCount > 0) {
+            toast.success(`Book ${status} successfully!`);
+            refetch();
+          }
+        } catch (error) {
+          toast.error("Failed to update status!");
+        }
       }
-    } catch (error) {
-      toast.error("Failed to update status!");
-    }
+    }); 
   };
 
   // -------------------------------
