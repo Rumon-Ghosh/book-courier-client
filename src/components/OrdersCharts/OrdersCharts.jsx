@@ -18,6 +18,7 @@ const MONTHS = [
 const OrdersChart = () => {
   const axiosSecure = useAxiosSecure();
 
+  // get data to show a chart of monthly orders
   const { data: formattedData = [] } = useQuery({
     queryKey: ["orders-stats"],
     queryFn: async () => {
