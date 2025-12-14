@@ -94,7 +94,7 @@ const AddBook = () => {
             )}
           </div>
 
-          {/* Book Image URL */}
+          {/* Book Image file */}
           <div className="form-control md:col-span-2">
             <label className="label">
               <span className="label-text font-medium">Book Image</span>
