@@ -19,7 +19,7 @@ const PaymentCancel = () => {
         can try again or review your orders anytime.
       </p>
 
-      {/* Button */}
+      {/* Button to go users order */}
       <Link to="/dashboard/my-orders" className="btn btn-outline btn-error px-6">
         Go to My Orders
       </Link>
