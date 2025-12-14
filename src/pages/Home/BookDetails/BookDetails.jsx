@@ -32,7 +32,7 @@ const BookDetails = () => {
     },
   });
 
-  // bookReview connect from database
+  //connect bookReview from database
   const {
     data: reviews = [],
     isLoading: reviewLoading,
