@@ -41,7 +41,7 @@ const Map = () => {
       </p>
 
       {/* ✅ RESPONSIVE MAP HEIGHT */}
-      <div className="h-[280px] sm:h-[350px] md:h-[500px] rounded-xl overflow-hidden shadow">
+      <div className="h-70 sm:h-87.5 md:h-125 rounded-xl overflow-hidden shadow">
         <MapContainer
           center={position}
           zoom={7}
