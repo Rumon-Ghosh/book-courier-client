@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 import { Link } from "react-router";
 
 const Slider = () => {
-  // Slider Data Array
+  // Slider Data Array(3)
   const slides = [
     {
       id: 1,
