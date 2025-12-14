@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
 
-  // get all the users
+  // get all users from db
   const {
     data: allUsers = [],
     isLoading,
@@ -23,6 +23,7 @@ const AllUsers = () => {
     },
   });
 
+  // change role by admin ('Librarian', 'Admin')
   const handleChangeUserRole = async (id, role) => {
     // console.log(id, role)
     Swal.fire({
