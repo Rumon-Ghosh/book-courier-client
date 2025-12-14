@@ -125,6 +125,7 @@ const OwnerOrder = () => {
           </tbody>
         </table>
       </div>
+      {/* added pagination */}
       <div className="flex items-center justify-center gap-3 mt-5">
         <button
           className="btn btn-outline"
