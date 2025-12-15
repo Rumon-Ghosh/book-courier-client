@@ -72,8 +72,8 @@ const OwnerOrder = () => {
               <th>Book</th>
               <th>Customer</th>
               <th>Phone</th>
+              <th>Payment</th>
               <th>Status</th>
-              <th>Created</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -90,6 +90,7 @@ const OwnerOrder = () => {
                 <td>{order.bookName}</td>
                 <td>{order.userName}</td>
                 <td>{order.phone}</td>
+                <td>{order.paymentStatus}</td>
 
                 {/* Status Dropdown */}
                 <td>
@@ -108,10 +109,8 @@ const OwnerOrder = () => {
                   ) : <p className="text-red-600 text-lg">Cancelled</p> }
                 </td>
 
-                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-
                 <td>
-                  {order.orderStatus === "pending" && (
+                  {(order.paymentStatus === 'unpaid' && order.orderStatus === 'pending') && (
                     <button
                       onClick={() => handleCancelOrder(order._id)}
                       className="btn btn-error btn-sm text-white flex items-center gap-1"
