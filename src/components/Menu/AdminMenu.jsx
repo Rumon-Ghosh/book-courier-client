@@ -23,19 +23,6 @@ const AdminMenu = () => {
       {/* List item */}
       <li>
         <Link
-          to={`/dashboard/my-profile`}
-          className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-          data-tip="My Profile"
-        >
-          {/* add-book icon */}
-          <ImProfile />
-          <span className="is-drawer-close:hidden">My Profile</span>
-        </Link>
-      </li>
-
-      {/* List item */}
-      <li>
-        <Link
           to={`/dashboard/manage-books`}
           className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
           data-tip="Manage Books"
@@ -43,6 +30,19 @@ const AdminMenu = () => {
           {/* manage book icon */}
           <MdManageAccounts />
           <span className="is-drawer-close:hidden">Manage Books</span>
+        </Link>
+      </li>
+
+      {/* List item */}
+      <li>
+        <Link
+          to={`/dashboard/my-profile`}
+          className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+          data-tip="My Profile"
+        >
+          {/* add-book icon */}
+          <ImProfile />
+          <span className="is-drawer-close:hidden">My Profile</span>
         </Link>
       </li>
     </>
