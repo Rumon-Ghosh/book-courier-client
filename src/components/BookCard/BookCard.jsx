@@ -31,13 +31,13 @@ const BookCard = ({ book }) => {
               {book.category}
             </span>
 
-            <span
+            {/* <span
               className={`badge ${
                 book.status === "published" ? "badge-success" : "badge-warning"
               }`}
             >
               {book.status}
-            </span>
+            </span> */}
           </div>
 
           {/* Title */}

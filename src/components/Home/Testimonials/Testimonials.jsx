@@ -28,7 +28,7 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <div className="py-10">
+    <div className="my-10 md:my-15 lg:my-20">
       <div className="max-w-6xl mx-auto px-4">
 
         {/* Section Heading */}
@@ -39,10 +39,10 @@ const Testimonials = () => {
           viewport={{ once: true }}
           className="text-center mb-8"
         >
-          <h2 className="text-3xl md:text-4xl font-bold">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
             What Our Readers Say
           </h2>
-          <p className="mt-3 max-w-2xl mx-auto">
+          <p className="mb-5 max-w-2xl mx-auto text-lg">
             Real experiences from people who ordered books through BookCourier.
             Your satisfaction is our top priority.
           </p>

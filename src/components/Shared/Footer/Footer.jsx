@@ -1,6 +1,7 @@
 import React from "react";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6"; 
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
@@ -11,10 +12,10 @@ const Footer = () => {
         <div>
           <h3 className="footer-title mb-3">Quick Links</h3>
           <nav className="flex flex-col space-y-2">
-            <a className="link link-hover">Home</a>
-            <a className="link link-hover">Books</a>
-            <a className="link link-hover">Dashboard</a>
-            <a className="link link-hover">Service Area</a>
+            <Link to={`/`} className="link link-hover">Home</Link>
+            <Link to={`books`} className="link link-hover">Books</Link>
+            <Link to={`/about`} className="link link-hover">About</Link>
+            <Link to={`/blog`} className="link link-hover">Blogs</Link>
           </nav>
         </div>
 
@@ -22,24 +23,25 @@ const Footer = () => {
         <div>
           <h3 className="footer-title mb-3">Contact</h3>
           <p className="mb-1">📍 123 Library Street, BookTown</p>
-          <p className="mb-1">📞 +880 1234-567890</p>
-          <p className="mb-1">✉ support@bookverse.com</p>
+          <a href="tel:+880 1234-567890" className="mb-1">📞 +880 1234-567890</a>
+          <br />
+          <a href="mailto:support@bookverse.com" className="mb-1">✉ support@bookverse.com</a>
         </div>
 
         {/* Social Icons */}
         <div>
           <h3 className="footer-title mb-3">Follow Us</h3>
           <div className="flex items-center gap-4 mt-2">
-            <a className="text-xl hover:text-primary cursor-pointer">
+            <a href="https://www.facebook.com" target="_blank" className="text-xl hover:text-primary cursor-pointer">
               <FaFacebookF />
             </a>
-            <a className="text-xl hover:text-primary cursor-pointer">
+            <a href="https://www.instagram.com" target="_blank" className="text-xl hover:text-primary cursor-pointer">
               <FaInstagram />
             </a>
-            <a className="text-xl hover:text-primary cursor-pointer">
+            <a href="https://x.com" target="_blank" className="text-xl hover:text-primary cursor-pointer">
               <FaXTwitter />
             </a>
-            <a className="text-xl hover:text-primary cursor-pointer">
+            <a href="https://www.youtube.com" target="_blank" className="text-xl hover:text-primary cursor-pointer">
               <FaYoutube />
             </a>
           </div>

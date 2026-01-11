@@ -36,7 +36,7 @@ const Map = () => {
       <h3 className="text-2xl md:text-3xl text-center font-bold mb-2">
         Our Service Centers
       </h3>
-      <p className="text-center text-sm md:text-base mb-6">
+      <p className="text-center text-lg mb-6">
         Find BookCourier service locations near you
       </p>
 

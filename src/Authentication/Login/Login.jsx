@@ -15,7 +15,19 @@ const Login = () => {
 
   const from = location.state || '/'
 
-  const { register, handleSubmit, formState: {errors} } = useForm()
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+
+  const userCredential = () => {
+    setValue("email", "user@gmail.com");
+    setValue("password", "User1!")
+    toast.success("User credential filled successful!")
+  }
+
+  const adminCredential = () => {
+    setValue("email", "admin@test.com");
+    setValue("password", "Admin1!")
+    toast.success("Admin credential filled successful!")
+  }
 
   // email password login
   const handlePasswordLogin = async (data) => {
@@ -117,12 +129,12 @@ const Login = () => {
               <label className="block mb-1 text-sm font-medium">Password</label>
               <input
                 type="password"
-                {...register("password", { required: true })}
+                {...register("password", { required: "Password is required", minLength: { value: 6, message: "Password must be at least 6 characters long" }, pattern: { value: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$&*]).+$/, message: "Password must include at least one uppercase letter, one number, and one special character" } })}
                 placeholder="*******"
                 className="w-full px-3 py-2 border rounded-md"
               />
               {errors.password && (
-                <p className="text-red-500 text-sm">Password is required</p>
+                <p className="text-red-500 text-sm">{errors.password.message}</p>
               )}
             </div>
 
@@ -152,6 +164,17 @@ const Login = () => {
           >
             <FcGoogle size={28} />
             <p className="font-medium">Continue with Google</p>
+          </div>
+
+          <div className="flex flex-col gap-3 mt-5">
+            {/* user credential */}
+            <button
+              onClick={userCredential}
+              className="btn btn-outline w-full">User Demo Credential</button>
+            {/* admin credential */}
+            <button
+              onClick={adminCredential}
+              className="btn btn-outline w-full">Admin Demo Credential</button>
           </div>
 
           <p className="text-center text-sm text-gray-500 mt-4">

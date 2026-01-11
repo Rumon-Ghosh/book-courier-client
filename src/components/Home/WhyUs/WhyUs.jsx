@@ -35,7 +35,7 @@ const WhyUs = () => {
   ];
 
   return (
-    <div className="py-8 px-4 md:px-8 lg:px-12 max-w-7xl mx-auto">
+    <div className="my-10 md:my-15 lg:my20 px-4 md:px-8 lg:px-12 max-w-7xl mx-auto">
       {/* Heading */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -44,8 +44,8 @@ const WhyUs = () => {
         viewport={{ once: true }}
         className="text-center mb-8"
       >
-        <h2 className="text-3xl md:text-4xl font-bold">Why Choose BookCourier?</h2>
-        <p className="mt-3 text-base max-w-2xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold mb-3">Why Choose BookCourier?</h2>
+        <p className="mb-5 text-lg max-w-2xl mx-auto">
           We make borrowing and delivering books easier, faster, and more reliable than ever.
         </p>
       </motion.div>

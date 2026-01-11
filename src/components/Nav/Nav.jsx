@@ -3,9 +3,11 @@ import { Link, NavLink, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import { IoIosHome } from "react-icons/io";
-import { FaBook } from "react-icons/fa";
+import { FaBook, FaMicroblog } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FcAbout } from "react-icons/fc";
+import { ImProfile } from "react-icons/im";
+import { FaBagShopping } from "react-icons/fa6";
 
 const Nav = () => {
   const { user, logOutUser } = useAuth();
@@ -35,16 +37,24 @@ const Nav = () => {
   const links = (
     <>
       <li>
-        <NavLink to={`/`}><IoIosHome /> Home</NavLink>
+        <NavLink to={`/`}>
+          <IoIosHome /> Home
+        </NavLink>
       </li>
       <li>
-        <NavLink to={`/books`}><FaBook /> Books</NavLink>
+        <NavLink to={`/books`}>
+          <FaBook /> Books
+        </NavLink>
       </li>
       <li>
-        <NavLink to={`/about`}><FcAbout /> About</NavLink>
+        <NavLink to={`/about`}>
+          <FcAbout /> About
+        </NavLink>
       </li>
       <li>
-       {user && <NavLink to={`/dashboard`}><MdSpaceDashboard /> Dashboard</NavLink>}
+        <NavLink to={`/blog`}>
+          <FaMicroblog /> Blogs
+        </NavLink>
       </li>
       <li>
         <label className="swap swap-rotate">
@@ -105,11 +115,15 @@ const Nav = () => {
             {links}
           </ul>
         </div>
-        <Link
-          to={`/`}
-          className="flex items-center">
-          <img className="w-8 h-8" src="https://i.ibb.co/Tx9Hfnhs/icons8-books-48.png" alt="" />
-          <p className="text-lg font-bold">Book<span className="text-primary">Courier</span> </p>
+        <Link to={`/`} className="flex items-center">
+          <img
+            className="w-8 h-8"
+            src="https://i.ibb.co/Tx9Hfnhs/icons8-books-48.png"
+            alt=""
+          />
+          <p className="text-lg font-bold">
+            Book<span className="text-primary">Courier</span>{" "}
+          </p>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -117,15 +131,40 @@ const Nav = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <div className="flex gap-1 items-center">
-            <img className="w-10 h-10 rounded-full" src={user?.photoURL} alt="USER" />
-            <button
-              onClick={handleLogOutUser}
-              className="btn btn-primary">LogOut
-            </button>
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <img
+                className="w-10 rounded-full"
+                src={user?.photoURL}
+                alt="User"
+              />
+            </label>
+
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <NavLink to={`/dashboard`}>
+                  <MdSpaceDashboard /> Dashboard
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/dashboard/my-profile">
+                  <ImProfile /> Profile
+                </NavLink>
+              </li>
+
+              <li>
+                <button onClick={handleLogOutUser} className="btn">
+                  Logout
+                </button>
+              </li>
+            </ul>
           </div>
         ) : (
-          <Link className="btn btn-primary" to="/login">
+          <Link to="/login" className="btn btn-primary">
             Login
           </Link>
         )}

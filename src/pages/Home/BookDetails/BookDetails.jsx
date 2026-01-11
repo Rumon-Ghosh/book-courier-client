@@ -1,52 +1,59 @@
 import React, { useState } from "react";
+import { useParams, useNavigate, Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import toast from "react-hot-toast";
-import useAuth from "../../../hooks/useAuth";
-import { motion } from "framer-motion";
-import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import { useForm } from "react-hook-form";
-import useRole from "../../../hooks/useRole";
+import { motion } from "framer-motion";
 import { AiFillStar } from "react-icons/ai";
 import { FaUserCircle } from "react-icons/fa";
+import toast from "react-hot-toast";
+
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
+import useRole from "../../../hooks/useRole";
+import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 import ErrorPage from "../../ErrorPage/ErrorPage";
 
 const isValidObjectId = (id) => /^[a-f\d]{24}$/i.test(id);
 
 const BookDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const [role, isRoleLoading] = useRole();
-
+  const [role, roleLoading] = useRole();
   const [openModal, setOpenModal] = useState(false);
 
-  // Fetch single book
+  /* ---------------- Fetch Book ---------------- */
   const { data: book = {}, isLoading } = useQuery({
-    queryKey: ["book", id],
+    queryKey: ["book-details", id],
+    enabled: isValidObjectId(id),
     queryFn: async () => {
-      const { data } = await axiosSecure(`/books/${id}`);
-      return data;
+      const res = await axiosSecure.get(`/books/${id}`);
+      return res.data;
     },
   });
 
-  //connect bookReview from database
+  // related book fetch
+  const { data: relatedBooks = [], isLoading: relatedLoading } = useQuery({
+    queryKey: ["related-books", id],
+    enabled: !!id,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/related-books/${id}`);
+      return res.data;
+    },
+  });
+
+  /* ---------------- Fetch Reviews ---------------- */
   const {
     data: reviews = [],
     isLoading: reviewLoading,
     refetch,
   } = useQuery({
-    queryKey: ["book-review", id],
+    queryKey: ["book-reviews", id],
+    enabled: !!id,
     queryFn: async () => {
-      try {
-        const { data } = await axiosSecure.get(`/book-review/${id}`);
-        return data;
-      } catch (error) {
-        toast.error("Cannot get reviews from server!");
-        console.log(error);
-      }
+      const res = await axiosSecure.get(`/book-review/${id}`);
+      return res.data;
     },
   });
 
@@ -57,13 +64,14 @@ const BookDetails = () => {
     reset,
   } = useForm();
 
-  if (!isValidObjectId(id)) return <ErrorPage></ErrorPage>
-  
-  if (isLoading || isRoleLoading) return <LoadingSpinner></LoadingSpinner>;
+  if (!isValidObjectId(id)) return <ErrorPage />;
+  if (isLoading || reviewLoading || roleLoading || relatedLoading)
+    return <LoadingSpinner />;
 
-  // order send to database the get in the payment page
-  const handlePlaceOrder = async (data) => {
-    // console.log(data)
+  /* ---------------- Order ---------------- */
+  const handleOrderSubmit = async (data) => {
+    if (!user) return navigate("/login");
+
     const orderInfo = {
       bookId: book._id,
       bookName: book.bookName,
@@ -76,107 +84,89 @@ const BookDetails = () => {
       owner: book.createdBy,
     };
 
-    try {
-      const { data } = await axiosSecure.post("/orders", orderInfo);
-      if (data.insertedId) {
-        toast.success("Order Placed Successfully!");
-        setOpenModal(false);
-        navigate("/dashboard/my-orders");
-        reset();
-      }
-    } catch (err) {
-      toast.error("Error-> Order can't send!");
+    const res = await axiosSecure.post("/orders", orderInfo);
+    if (res.data.insertedId) {
+      toast.success("Order placed successfully");
+      setOpenModal(false);
+      navigate("/dashboard/my-orders");
+      reset();
     }
   };
 
-  // wishlist send to database
-  const handleAddWishlist = async () => {
-    try {
-      const wishlistItem = {
-        bookId: book._id,
-        bookName: book.bookName,
-        image: book.image,
-        price: book.price,
-        userEmail: user.email,
-        username: user.displayName,
-      };
+  /* ---------------- Wishlist ---------------- */
+  const handleWishlist = async () => {
+    if (!user) return navigate("/login");
 
-      const result = await axiosSecure.post("/wishlist", wishlistItem);
-      if (result.data.message) {
-        return toast.error("This items already added to your wishlist");
-      } else {
-        toast.success("Added to Wishlist!");
-      }
-    } catch (err) {
-      toast.error("Failed to add to wishlist");
+    const wishlistItem = {
+      bookId: book._id,
+      bookName: book.bookName,
+      image: book.image,
+      price: book.price,
+      userEmail: user.email,
+    };
+
+    const res = await axiosSecure.post("/wishlist", wishlistItem);
+    if (res.data.message) {
+      toast.error(res.data.message);
+    } else {
+      toast.success("Added to wishlist");
     }
   };
 
-  // bookReview send to database
-  const handleAddReview = async (e) => {
-    try {
-      e.preventDefault();
-      const reviewData = e.target.review.value;
-      const reviewInfo = {
-        bookId: id,
-        review: reviewData,
-        reviewedBy: user?.displayName,
-      };
-      const { data } = await axiosSecure.post("/book-review", reviewInfo);
-      if (data.insertedId) {
-        toast.success("Thanks for your feedback!");
-        e.target.reset();
-        refetch();
-      }
-    } catch (error) {
-      toast.error("Error on sending reviews!");
-      console.log(error);
+  // reviews handling function
+  const handleReview = async (e) => {
+    e.preventDefault();
+    if (!user) return navigate("/login");
+
+    const reviewText = e.target.review.value;
+    if (!reviewText) return toast.error("Review is required");
+
+    const res = await axiosSecure.post("/book-review", {
+      bookId: id,
+      review: reviewText,
+      reviewedBy: user.displayName,
+    });
+
+    if (res.data.insertedId) {
+      toast.success("Review submitted");
+      e.target.reset();
+      refetch();
     }
   };
 
-  if (reviewLoading) return <LoadingSpinner></LoadingSpinner>;
-
-  // console.log(reviews)
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Book Details Section */}
-      <motion.div
+    <div className="max-w-7xl mx-auto px-4 py-10 space-y-14">
+      {/* OVERVIEW */}
+      <motion.section
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="grid md:grid-cols-2 gap-10 items-center"
+        className="grid md:grid-cols-2 gap-10"
       >
-        {/* Image */}
-        <div className="flex items-center justify-center bg-base-300 py-5 rounded-3xl">
+        <div className="bg-base-200 rounded-2xl p-6 flex justify-center">
           <img
             src={book.image}
-            className="rounded-xl shadow-lg w-42 h-full text-center object-cover"
-            alt=""
+            alt={book.bookName}
+            className="rounded-xl max-h-105 object-cover"
           />
         </div>
 
-        {/* Info */}
         <div className="space-y-4">
           <h1 className="text-3xl font-bold">{book.bookName}</h1>
-          <p className="text-lg opacity-75">by {book.author}</p>
+          <p className="opacity-70">Author: {book.author}</p>
 
-          <div className="flex gap-5 items-center">
-            <p className="text-lg font-medium">Category: </p>
+          <div className="flex gap-3">
             <span className="badge badge-primary">{book.category}</span>
-          </div>
-
-          <div className="flex gap-5 items-center">
-            <p className="text-lg font-medium">Added by: </p>
             <span className="badge badge-info">{book.createdBy}</span>
           </div>
 
-          <p className="mt-2">{book.description}</p>
+          <p className="leading-relaxed">{book.description}</p>
 
           <p className="text-2xl font-semibold">৳ {book.price}</p>
 
-          <div className="flex gap-3 mt-5">
+          <div className="flex gap-3 pt-4">
             <button
-            disabled={role !== "user" || book.status === "unpublished"}
+              disabled={role !== "user" || book.status === "unpublished"}
               onClick={() => setOpenModal(true)}
               className="btn btn-primary"
             >
@@ -185,86 +175,116 @@ const BookDetails = () => {
 
             <button
               disabled={role !== "user" || book.status === "unpublished"}
-              onClick={handleAddWishlist}
+              onClick={handleWishlist}
               className="btn btn-secondary"
             >
               Add to Wishlist
             </button>
           </div>
         </div>
-      </motion.div>
+      </motion.section>
 
-      {/* Review Section */}
-      <div className="mt-14">
-        <h2 className="text-2xl font-semibold mb-3">Reviews & Ratings</h2>
-        <p className="opacity-70">
-          If you have ordered this book, you can submit your review.
-        </p>
+      {/* SPECIFICATIONS */}
+      <section className="bg-base-200 rounded-2xl p-6">
+        <h2 className="text-2xl font-bold mb-4">Book Information</h2>
+        <ul className="grid sm:grid-cols-2 gap-4">
+          <li>
+            <strong>Category:</strong> {book.category}
+          </li>
+          <li>
+            <strong>Status:</strong> {book.status}
+          </li>
+          <li>
+            <strong>Price:</strong> ৳ {book.price}
+          </li>
+          <li>
+            <strong>Added By:</strong> {book.createdBy}
+          </li>
+        </ul>
+      </section>
 
-        {/* Review form structure (you can expand later) */}
-        <div className="p-5 bg-base-200 rounded-xl mt-4">
-          <h3 className="font-semibold mb-3">Write a Review</h3>
-          <form onSubmit={handleAddReview}>
-            <textarea
-              className="textarea textarea-bordered w-full"
-              placeholder="Write your thoughts..."
-              name="review"
-            ></textarea>
+      {/* REVIEWS */}
+      <section>
+        <h2 className="text-2xl font-bold mb-4">Reviews & Ratings</h2>
 
-            <div className="mt-4">
-              <button className="btn btn-primary">Submit Review</button>
-            </div>
-          </form>
-        </div>
-      </div>
+        <form
+          onSubmit={handleReview}
+          className="bg-base-200 p-5 rounded-xl mb-6"
+        >
+          <textarea
+            name="review"
+            className="textarea textarea-bordered w-full"
+            placeholder="Write your review"
+          />
+          <button className="btn btn-primary mt-3">Submit Review</button>
+        </form>
 
-      {/* Reviews List */}
-      <div className="mt-10">
-        <h3 className="text-2xl font-bold mb-5 flex items-center gap-2">
-          <AiFillStar className="text-yellow-500 text-3xl" />
-          Here Is Latest 5 Reviews Of This Book
-        </h3>
+        {reviews.length === 0 && <p>No reviews yet. Be the first!</p>}
 
-        {reviews.length === 0 && (
-          <p className="text-lg">
-            No reviews yet. Be the first to review!
-          </p>
-        )}
-
-        <div className="space-y-5">
-          {reviews.map((review) => (
-            <div
-              key={review._id}
-              className="card bg-base-100 shadow-xl border rounded-xl p-5"
-            >
-              {/* Header */}
-              <div className="flex items-center gap-4">
-                <FaUserCircle className="text-4xl" />
-
-                <div className="flex-1">
-                  <p className="font-semibold text-lg">{review.reviewedBy}</p>
-                  <p className="text-sm">
-                    {new Date(review.reviewedAt).toLocaleDateString()}
+        <div className="space-y-4">
+          {reviews.map((r) => (
+            <div key={r._id} className="bg-base-100 border rounded-xl p-4">
+              <div className="flex items-center gap-3 mb-2">
+                <FaUserCircle className="text-3xl" />
+                <div>
+                  <p className="font-semibold">{r.reviewedBy}</p>
+                  <p className="text-sm opacity-60">
+                    {new Date(r.reviewedAt).toLocaleDateString()}
                   </p>
                 </div>
-
-                {/* Star (visual review indicator) */}
-                <AiFillStar className="text-yellow-500 text-2xl" />
+                <AiFillStar className="text-yellow-500 ml-auto" />
               </div>
-
-              {/* Review text */}
-              <p className="mt-3 leading-relaxed">
-                {review.review}
-              </p>
+              <p>{r.review}</p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Order Modal */}
+      {/* RELATED ITEMS */}
+      <section className="mt-14">
+        <h2 className="text-2xl font-bold mb-6">Related Books</h2>
+
+        {relatedLoading && <LoadingSpinner />}
+
+        {!relatedLoading && relatedBooks.length === 0 && (
+          <p className="opacity-70">No related books found.</p>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {relatedBooks.map((book) => (
+            <div
+              key={book._id}
+              className="card bg-base-100 shadow-md border rounded-xl"
+            >
+              <figure className="h-48">
+                <img
+                  src={book.image}
+                  alt={book.bookName}
+                  className="h-full w-full object-cover"
+                />
+              </figure>
+
+              <div className="card-body p-4">
+                <h3 className="font-semibold line-clamp-1">{book.bookName}</h3>
+
+                <p className="text-sm opacity-70">৳ {book.price}</p>
+
+                <Link
+                  to={`/book/${book._id}`}
+                  className="btn btn-primary btn-sm mt-2"
+                >
+                  View Details
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/*  ORDER MODAL  */}
       {openModal && (
         <div className="modal modal-open">
-          <div className="modal-box relative">
+          <div className="modal-box">
             <button
               onClick={() => setOpenModal(false)}
               className="btn btn-sm btn-circle absolute right-2 top-2"
@@ -272,51 +292,39 @@ const BookDetails = () => {
               ✕
             </button>
 
-            <h3 className="text-lg font-bold mb-4">Place Your Order</h3>
+            <h3 className="text-xl font-bold mb-4">Place Order</h3>
 
             <form
-              onSubmit={handleSubmit(handlePlaceOrder)}
+              onSubmit={handleSubmit(handleOrderSubmit)}
               className="space-y-4"
             >
               <input
-                type="text"
-                value={user.displayName}
                 readOnly
+                value={user?.displayName}
                 className="input input-bordered w-full"
               />
               <input
-                type="email"
-                value={user.email}
                 readOnly
+                value={user?.email}
                 className="input input-bordered w-full"
               />
 
               <input
-                type="phone"
+                {...register("phone", { required: true })}
                 placeholder="Phone Number"
                 className="input input-bordered w-full"
-                {...register("phone", { required: "Phone Number is required" })}
               />
               {errors.phone && (
-                <span className="text-red-500 mt-1">
-                  {errors.phone.message}
-                </span>
+                <p className="text-red-500 text-sm">Phone required</p>
               )}
 
               <textarea
+                {...register("address", { required: true })}
                 placeholder="Address"
                 className="textarea textarea-bordered w-full"
-                {...register("address", {
-                  required: "Address field is required",
-                })}
-              ></textarea>
-              {errors.address && (
-                <span className="text-red-500 mt-1">
-                  {errors.address.message}
-                </span>
-              )}
+              />
 
-              <button className="btn btn-primary w-full">Place Order</button>
+              <button className="btn btn-primary w-full">Confirm Order</button>
             </form>
           </div>
         </div>

@@ -15,15 +15,15 @@ const LatestBooks = () => {
   });
   // console.log(latestBools);
   return (
-    <div className="w-11/12 mx-auto mb-14">
+    <div className="w-11/12 mx-auto my-10 md:my-15 lg:my-20">
       <h3 className="text-4xl text-center font-bold mb-3">
         Explore Our Latest Arrivals
       </h3>
-      <p className="text-center mb-10">
+      <p className="text-center mb-5 text-lg">
         Dive into a curated collection of new fiction, non-fiction, and
         bestsellers.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-8">
         {latestBools.map((book) => (
           <BookCard key={book._id} book={book}></BookCard>
         ))}

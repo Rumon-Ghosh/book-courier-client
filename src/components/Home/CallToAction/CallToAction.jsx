@@ -24,6 +24,12 @@ const CallToAction = () => {
           >
             Browse Books
           </Link>
+          <Link
+            to="/signup"
+            className="btn btn-primary font-semibold px-8"
+          >
+            Register Now
+          </Link>
         </div>
       </div>
     </div>

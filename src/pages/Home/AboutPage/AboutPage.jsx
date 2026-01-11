@@ -7,7 +7,7 @@ const AboutPage = () => {
 
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-primary">About BookCourier</h1>
+        <h1 className="text-4xl font-bold">About BookCourier</h1>
         <p className="mt-3 text-base-content/70 max-w-2xl mx-auto">
           BookCourier is a modern platform built to connect book lovers, librarians, and readers 
           through a seamless and fast book marketplace experience.

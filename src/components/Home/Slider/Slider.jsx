@@ -31,7 +31,7 @@ const Slider = () => {
   ];
 
   return (
-    <div className="my-14 px-4">
+    <div className="my-10 md:my-15 lg:my-20 px-4">
       <Swiper
         slidesPerView={1}
         spaceBetween={30}

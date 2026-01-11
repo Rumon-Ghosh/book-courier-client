@@ -2,15 +2,15 @@ import React from "react";
 
 const FAQ = () => {
   return (
-    <div className="bg-base-200 py-20 md:py-15">
+    <div className="bg-base-200 py-10 md:py-15 lg:py-20">
       <div className="max-w-5xl mx-auto px-4">
         
         {/* Heading */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3">
             Frequently Asked Questions
           </h2>
-          <p className="mt-3 max-w-2xl mx-auto">
+          <p className="mb-5 max-w-2xl mx-auto text-lg">
             Find quick answers to common questions from our readers.
           </p>
         </div>

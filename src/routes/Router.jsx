@@ -24,6 +24,7 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import AboutPage from "../pages/Home/AboutPage/AboutPage";
 import LibrarianRoute from "./LibrarianRoute";
 import AdminRoute from "./AdminRoute";
+import Blog from "../pages/Home/Blog/Blog";
 
 export const router = createBrowserRouter([
   {
@@ -44,12 +45,12 @@ export const router = createBrowserRouter([
         element: <AboutPage></AboutPage>,
       },
       {
+        path: "/blog",
+        element: <Blog></Blog>
+      },
+      {
         path: "/book/:id",
-        element: (
-          <PrivateRoute>
-            <BookDetails></BookDetails>
-          </PrivateRoute>
-        ),
+        element: <BookDetails></BookDetails>,
       },
     ],
   },
