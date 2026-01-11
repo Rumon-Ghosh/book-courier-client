@@ -56,6 +56,20 @@ const Nav = () => {
           <FaMicroblog /> Blogs
         </NavLink>
       </li>
+      {user && (
+        <>
+          <li>
+            <NavLink to="/dashboard/my-orders">
+              <FaBagShopping /> My-Orders
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={`/dashboard`}>
+              <MdSpaceDashboard /> Dashboard
+            </NavLink>
+          </li>
+        </>
+      )}
       <li>
         <label className="swap swap-rotate">
           {/* this hidden checkbox controls the state */}
@@ -144,12 +158,6 @@ const Nav = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <li>
-                <NavLink to={`/dashboard`}>
-                  <MdSpaceDashboard /> Dashboard
-                </NavLink>
-              </li>
-
               <li>
                 <NavLink to="/dashboard/my-profile">
                   <ImProfile /> Profile
