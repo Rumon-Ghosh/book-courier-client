@@ -15,18 +15,44 @@ const Login = () => {
 
   const from = location.state || '/'
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const userCredential = () => {
-    setValue("email", "user@gmail.com");
-    setValue("password", "User1!")
-    toast.success("User credential filled successful!")
+  const userCredential = async () => {
+    try {
+      const LoggedIn = await logInUser("user@gmail.com", "User1!")
+        if (LoggedIn) {
+          // console.log(LoggedIn)
+          toast.success("LogIn successful as User")
+          if (from.includes('/dashboard')) {
+            navigate('/')
+          } else {
+            navigate(from, {replace: true})
+          }
+        }
+    } catch (err) {
+      toast.error("Give Correct Email/Password")
+      console.log(err.message);
+      setLoading(false)
+    }
   }
 
-  const adminCredential = () => {
-    setValue("email", "admin@test.com");
-    setValue("password", "Admin1!")
-    toast.success("Admin credential filled successful!")
+  const adminCredential = async () => {
+    try {
+      const LoggedIn = await logInUser("admin@test.com", "Admin1!")
+        if (LoggedIn) {
+          // console.log(LoggedIn)
+          toast.success("LogIn successful as Admin")
+          if (from.includes('/dashboard')) {
+            navigate('/')
+          } else {
+            navigate(from, {replace: true})
+          }
+        }
+    } catch (err) {
+      toast.error("Give Correct Email/Password")
+      console.log(err.message);
+      setLoading(false)
+    }
   }
 
   // email password login
@@ -170,11 +196,11 @@ const Login = () => {
             {/* user credential */}
             <button
               onClick={userCredential}
-              className="btn btn-outline w-full">User Demo Credential</button>
+              className="btn btn-outline w-full">Login As User</button>
             {/* admin credential */}
             <button
               onClick={adminCredential}
-              className="btn btn-outline w-full">Admin Demo Credential</button>
+              className="btn btn-outline w-full">Login As Admin</button>
           </div>
 
           <p className="text-center text-sm text-gray-500 mt-4">
